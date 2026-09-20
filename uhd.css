@@ -6,7 +6,7 @@
 .glow-ice { background:radial-gradient(ellipse,#388fe72c,transparent 68%); }
 .hero { min-height:max(850px,100svh); }
 .quick-download { color:var(--accent-2); font-weight:700; }
-.hero-visual { overflow:visible; }
+.hero-visual { overflow-x:clip; overflow-y:visible; }
 .hero-visual::after { content:""; position:absolute; inset:5%; z-index:-1; border-radius:50%; background:conic-gradient(from 20deg,transparent 0 12%,#9d78ed18 22%,transparent 35% 60%,#6abde21a 75%,transparent 90%); animation:rotate 34s linear infinite; }
 .hero-grid { animation:groundTravel 15s linear infinite; }
 .core-heading { font-size:.59rem; }
