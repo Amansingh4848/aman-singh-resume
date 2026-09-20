@@ -78,7 +78,7 @@
   profileDialog.querySelectorAll('a').forEach(link => link.addEventListener('click', () => profileDialog.close()));
 
   // Keep heading semantics and line breaks intact while staging individual words.
-  document.querySelectorAll('.section-heading h2,.contact-inner h2,.education h2,.resume-copy h2').forEach(heading => {
+  document.querySelectorAll('.section-heading h2,.contact-inner h2,.education h2,.social-heading h2').forEach(heading => {
     let wordIndex = 0;
     [...heading.childNodes].forEach(node => {
       if (node.nodeType !== Node.TEXT_NODE) return;
@@ -105,7 +105,7 @@
   listeners.push(syncRibbon);
   syncRibbon();
 
-  document.querySelectorAll('.capability-grid,.download-grid,.social-grid,.project-grid').forEach(group => {
+  document.querySelectorAll('.capability-grid,.social-grid,.project-grid,.gallery-grid').forEach(group => {
     [...group.children].forEach((item, index) => item.style.setProperty('--reveal-delay', `${index % 2 * 110}ms`));
   });
 
@@ -119,7 +119,7 @@
     decoration.innerHTML = '<div class="section-divider"></div><div class="section-aura"></div><div class="section-orb"><svg viewBox="0 0 300 300"><circle cx="150" cy="150" r="116"/><circle class="orb-dashed" cx="150" cy="150" r="139"/><g class="orb-arc"><path d="M150 52a98 98 0 0 1 98 98M150 248a98 98 0 0 1-98-98"/><circle class="orb-centre" cx="150" cy="52" r="3"/><circle class="orb-centre" cx="150" cy="248" r="3"/></g><path d="M130 150h40M150 130v40"/></svg></div>';
     section.prepend(decoration);
   });
-  document.querySelectorAll('.capability-card,.download-card,.social-card').forEach((card,index) => {
+  document.querySelectorAll('.capability-card,.social-card,.gallery-card').forEach((card,index) => {
     const sweep = document.createElement('span');
     sweep.className = 'light-sweep';
     sweep.setAttribute('aria-hidden','true');
@@ -139,7 +139,7 @@
     art.innerHTML = `<svg viewBox="0 0 140 140">${sculptures[index % sculptures.length]}</svg>`;
     card.prepend(art);
   });
-  document.querySelectorAll('.capability-card,.project-card,.download-card,.social-card').forEach((card,index) => {
+  document.querySelectorAll('.capability-card,.project-card,.social-card,.gallery-card').forEach((card,index) => {
     const edge = document.createElement('span');
     edge.className = 'edge-runner';
     edge.setAttribute('aria-hidden','true');
@@ -207,7 +207,8 @@
   attachTilt(visual, monogram, 22);
   document.querySelectorAll('.capability-card').forEach(card => attachTilt(card, card, 7));
   document.querySelectorAll('.project-card').forEach(card => attachTilt(card, card, 4));
-  document.querySelectorAll('.download-card,.social-card').forEach(card => attachTilt(card, card, 0));
+  document.querySelectorAll('.social-card').forEach(card => attachTilt(card, card, 0));
+  document.querySelectorAll('.gallery-card').forEach(card => attachTilt(card, card, 5));
   document.querySelectorAll('.hero-actions .button').forEach(button => {
     button.addEventListener('pointermove', event => {
       if (!enabled() || !finePointer.matches) return;
@@ -224,9 +225,23 @@
     listeners.push(active => { if (!active) reset(); });
   });
 
+  const galleryCards = [...document.querySelectorAll('.gallery-card')];
+  const galleryFilters = [...document.querySelectorAll('[data-gallery-filter]')];
+  const galleryStatus = document.querySelector('.gallery-status');
+  galleryFilters.forEach(button => button.addEventListener('click', () => {
+    const selected = button.dataset.galleryFilter;
+    let count = 0;
+    galleryCards.forEach(card => {
+      card.hidden = selected !== 'all' && card.dataset.platform !== selected;
+      if (!card.hidden) count++;
+    });
+    galleryFilters.forEach(filter => filter.setAttribute('aria-pressed',String(filter === button)));
+    galleryStatus.textContent = `${count} ${selected === 'all' ? 'highlights' : selected === 'instagram' ? 'photos' : 'videos'}`;
+  }));
+
   // Original real-time energy sculpture. No franchise assets or animation library.
   // Decorative motion is bounded, pausable, and suspended outside the viewport.
-  const artScenes = [...document.querySelectorAll('.project-card,.ambient-section,footer')];
+  const artScenes = [...document.querySelectorAll('.project-card,.gallery-card,.portrait-feature,.social-card,.ambient-section,footer')];
   const sceneVisible = new WeakMap();
   const syncArt = () => artScenes.forEach(scene => {
     const active = enabled() && !document.hidden && sceneVisible.get(scene);
