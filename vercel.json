@@ -3,6 +3,20 @@
   "trailingSlash": false,
   "headers": [
     {
+      "source": "/Aman-Singh-Resume.docx",
+      "headers": [
+        { "key": "Content-Type", "value": "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"Aman-Singh-Resume.docx\"" }
+      ]
+    },
+    {
+      "source": "/Aman-Singh-Resume.pdf",
+      "headers": [
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"Aman-Singh-Resume.pdf\"" }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },

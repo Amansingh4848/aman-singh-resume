@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="motion.css?v=6">
   <link rel="stylesheet" href="cinematic.css?v=2">
   <link rel="stylesheet" href="ambient.css?v=1">
+  <link rel="stylesheet" href="uhd.css?v=1">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Aman Singh","jobTitle":"Business Development Executive","url":"https://aman-singh-resume.vercel.app/","image":"https://aman-singh-resume.vercel.app/assets/aman-singh.jpg","email":"17aman27singh17@gmail.com","telephone":"+919098103580","sameAs":["https://www.linkedin.com/in/aman-singh-83993520a/","https://www.youtube.com/channel/UCP1U0LFXN5BjjqfNue8WHCw","https://www.instagram.com/amansinghsuneo4447__/"],"knowsAbout":["Business development","International software sales","Artificial intelligence","Machine learning"]}</script>
 </head>
 <body id="top">
@@ -48,6 +49,11 @@
     <a href="#about">About</a><a href="#experience">Experience</a><a href="#projects">Projects</a><a href="#resume">Download résumé</a><a href="#contact">Contact</a>
   </nav>
 
+  <button class="quality-toggle" type="button" aria-label="Visual detail: Ultra. Switch to balanced effects." title="Switch visual detail"><span>ULTRA</span></button>
+  <nav class="motion-chapters" aria-label="Portfolio chapters">
+    <a href="#top" aria-label="Introduction">00</a><a href="#about" aria-label="Profile">01</a><a href="#experience" aria-label="Experience">02</a><a href="#capabilities" aria-label="Capabilities">03</a><a href="#projects" aria-label="Projects">04</a><a href="#credentials" aria-label="Education">05</a><a href="#resume" aria-label="Résumé downloads">06</a><a href="#profiles" aria-label="Social profiles">07</a><a href="#contact" aria-label="Contact">08</a>
+  </nav>
+
   <main id="main">
     <section class="hero section-shell" aria-labelledby="hero-title">
       <div class="hero-atmosphere" aria-hidden="true"><div class="aurora aurora-one"></div><div class="aurora aurora-two"></div><div class="hero-grid"></div></div>
@@ -63,7 +69,7 @@
         <div class="quick-links" aria-label="Contact links">
           <a href="tel:+919098103580">+91 90981 03580</a>
           <a href="https://www.linkedin.com/in/aman-singh-83993520a/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
-          <a href="Aman-Singh-Resume.docx" download>Word version ↓</a>
+          <a class="quick-download" href="Aman-Singh-Resume.docx" download="Aman-Singh-Resume.docx">Download Word (.docx) ↓</a>
           <button class="profile-trigger quick-profile" type="button" aria-haspopup="dialog" aria-controls="profile-dialog">All profiles ↗</button>
         </div>
       </div>
@@ -82,6 +88,7 @@
         <div class="floating-tag tag-two" aria-hidden="true"><i></i> TECHNOLOGY</div>
         <div class="floating-tag tag-three" aria-hidden="true"><i></i> GROWTH</div>
         <div class="core-caption" aria-hidden="true">Three disciplines. One direction.</div>
+        <div class="core-readout" aria-hidden="true"><span><span class="signal-bars"><i></i><i></i><i></i><i></i><i></i></span> LIVE GENERATIVE ART</span><span>VECTOR + NATIVE CANVAS</span></div>
         <button class="core-boost" type="button" aria-label="Power up the energy animation"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m11 2-7 9h5l-1 7 8-10h-6Z"/></svg><span>Power up</span><span class="boost-hint" aria-hidden="true">↗</span></button>
       </div>
       <a class="scroll-cue" href="#about" aria-label="Scroll to about section">Scroll <span>↓</span></a>
@@ -219,7 +226,7 @@
       </div>
     </section>
 
-    <section class="section section-shell credentials">
+    <section class="section section-shell credentials" id="credentials">
       <div class="education reveal">
         <p class="eyebrow">05 · Education</p>
         <h2>B.Tech in Computer Science and Engineering</h2>
@@ -247,7 +254,7 @@
           <span class="file-icon">PDF</span><span class="download-details"><strong>Download PDF</strong><span>Ready to share and print</span></span><span class="download-arrow" aria-hidden="true">↓</span>
         </a>
         <a class="download-card reveal" href="Aman-Singh-Resume.docx" download="Aman-Singh-Resume.docx" aria-label="Download Aman Singh résumé as Word document">
-          <span class="file-icon">DOCX</span><span class="download-details"><strong>Download Word</strong><span>Editable Microsoft Word file</span></span><span class="download-arrow" aria-hidden="true">↓</span>
+          <span class="file-icon">DOCX</span><span class="download-details"><strong>Download Word (.docx)</strong><span>Editable résumé · Includes my live website</span></span><span class="download-arrow" aria-hidden="true">↓</span>
         </a>
       </div>
     </section>
@@ -290,6 +297,7 @@
     </div>
   </dialog>
   <script src="script.js"></script>
-  <script src="motion.js?v=7"></script>
+  <script src="motion-quality.js?v=1"></script>
+  <script src="motion.js?v=8"></script>
 </body>
 </html>

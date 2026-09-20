@@ -5,6 +5,33 @@
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
   const listeners = [];
+  const qualityListeners = [];
+  const qualityControl = document.querySelector('.quality-toggle');
+  const compactScreen = matchMedia('(max-width:600px)');
+  const canvasSize = window.PortfolioMotionQuality.canvasSize;
+  let qualityChoice = null;
+  try {
+    const saved = localStorage.getItem('aman-quality');
+    if (saved === 'ultra' || saved === 'balanced') qualityChoice = saved;
+  } catch (_) {}
+  const quality = () => qualityChoice || (compactScreen.matches ? 'balanced' : 'ultra');
+  function updateQuality() {
+    const detail = quality();
+    root.dataset.quality = detail;
+    root.dataset.motionEdition = 'uhd';
+    qualityControl.querySelector('span').textContent = detail.toUpperCase();
+    const label = `Visual detail: ${detail === 'ultra' ? 'Ultra' : 'Balanced'}. Switch to ${detail === 'ultra' ? 'balanced' : 'ultra'} effects.`;
+    qualityControl.setAttribute('aria-label', label);
+    qualityControl.title = label;
+    qualityListeners.forEach(listener => listener());
+  }
+  qualityControl.addEventListener('click', () => {
+    qualityChoice = quality() === 'ultra' ? 'balanced' : 'ultra';
+    try { localStorage.setItem('aman-quality', qualityChoice); } catch (_) {}
+    updateQuality();
+  });
+  compactScreen.addEventListener('change', updateQuality);
+  updateQuality();
   let paused = false;
   try { paused = localStorage.getItem('aman-motion') === 'paused'; } catch (_) {}
   const enabled = () => !preference.matches && !paused;
@@ -18,6 +45,7 @@
     control.setAttribute('aria-pressed', String(!active));
     control.title = label;
     control.disabled = preference.matches;
+    qualityControl.disabled = preference.matches;
     listeners.forEach(listener => listener(active));
   }
   control.addEventListener('click', () => {
@@ -98,10 +126,35 @@
     sweep.style.setProperty('--sweep-delay', (index * -1.7) + 's');
     card.append(sweep);
   });
+  const sculptures = [
+    '<path class="sculpture-path" d="M25 93 54 65 77 76 113 29M23 107h91"/><path d="m91 29 22 0 0 22M38 93v14M61 83v24M84 73v34M107 56v51"/><circle class="sculpture-ring" cx="70" cy="68" r="52" stroke-dasharray="55 20 2 20"/><circle class="sculpture-node" cx="77" cy="76" r="3"/>',
+    '<circle class="sculpture-ring" cx="70" cy="70" r="46" stroke-dasharray="40 15 2 15"/><path class="sculpture-path" d="m70 30 35 60H35ZM35 50h70L70 110Z"/><circle cx="70" cy="70" r="16"/><circle class="sculpture-node" cx="70" cy="30" r="4"/><circle class="sculpture-node" cx="35" cy="90" r="4"/><circle class="sculpture-node" cx="105" cy="90" r="4"/>',
+    '<path class="sculpture-path" d="m70 19 43 25v50l-43 25-43-25V44Z"/><path d="m27 44 43 25 43-25M70 69v50M70 19v50L27 94M70 69l43 25"/><circle class="sculpture-ring" cx="70" cy="70" r="58" stroke-dasharray="50 20 2 20"/><circle class="sculpture-node" cx="70" cy="69" r="4"/>',
+    '<rect x="48" y="48" width="44" height="44" rx="8"/><path class="sculpture-path" d="M70 17v31M70 92v31M17 70h31M92 70h31M30 30l18 18M92 92l18 18M30 110l18-18M92 48l18-18"/><circle class="sculpture-ring" cx="70" cy="70" r="56" stroke-dasharray="25 15"/><path d="M58 70h24M70 58v24"/><circle class="sculpture-node" cx="70" cy="17" r="3"/><circle class="sculpture-node" cx="123" cy="70" r="3"/>'
+  ];
+  document.querySelectorAll('.capability-card').forEach((card,index) => {
+    const art = document.createElement('div');
+    art.className = 'skill-sculpture';
+    art.setAttribute('aria-hidden','true');
+    art.innerHTML = `<svg viewBox="0 0 140 140">${sculptures[index % sculptures.length]}</svg>`;
+    card.prepend(art);
+  });
+  document.querySelectorAll('.capability-card,.project-card,.download-card,.social-card').forEach((card,index) => {
+    const edge = document.createElement('span');
+    edge.className = 'edge-runner';
+    edge.setAttribute('aria-hidden','true');
+    edge.style.setProperty('--scene-delay', `${index * -1.2}s`);
+    card.append(edge);
+  });
+  document.querySelectorAll('.timeline-body ul').forEach(list => [...list.children].forEach((item,index) => item.style.setProperty('--bullet',index)));
+  document.querySelectorAll('main > section,footer').forEach(section => { section.dataset.motionRegion = 'true'; });
 
   const header = document.querySelector('.site-header');
   const links = [...document.querySelectorAll('.site-header nav a')];
   const sections = links.map(link => document.querySelector(link.getAttribute('href')));
+  const chapterLinks = [...document.querySelectorAll('.motion-chapters a')];
+  const chapters = chapterLinks.map(link => document.querySelector(link.getAttribute('href')));
+  const ambientSections = [...document.querySelectorAll('.ambient-section')];
   let scrollPending = false;
   function updateNavigation() {
     header.classList.toggle('scrolled', scrollY > 24);
@@ -110,6 +163,16 @@
     links.forEach((link, index) => {
       if (index === current) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');
+    });
+    let activeChapter = 0;
+    chapters.forEach((section,index) => { if (section.getBoundingClientRect().top < innerHeight * .5) activeChapter = index; });
+    chapterLinks.forEach((link,index) => {
+      if (index === activeChapter) link.setAttribute('aria-current','location');
+      else link.removeAttribute('aria-current');
+    });
+    if (enabled() && !compactScreen.matches) ambientSections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < innerHeight) section.style.setProperty('--scene-shift', `${Math.max(-45,Math.min(45,(innerHeight / 2 - rect.top) * .045))}px`);
     });
     const timeline = document.querySelector('.timeline');
     const bounds = timeline.getBoundingClientRect();
@@ -163,7 +226,7 @@
 
   // Original real-time energy sculpture. No franchise assets or animation library.
   // Decorative motion is bounded, pausable, and suspended outside the viewport.
-  const artScenes = [...document.querySelectorAll('.project-card,.ambient-section')];
+  const artScenes = [...document.querySelectorAll('.project-card,.ambient-section,footer')];
   const sceneVisible = new WeakMap();
   const syncArt = () => artScenes.forEach(scene => {
     const active = enabled() && !document.hidden && sceneVisible.get(scene);
@@ -178,22 +241,21 @@
   document.addEventListener('visibilitychange', syncArt);
   syncArt();
 
-  // Viewport-sized field: a single bounded canvas animates behind every section.
-  // It renders at 24 fps (20 on phones), caps resolution, and stops when paused.
+  // A single native-pixel canvas, up to UHD, carries the full-page light sculpture.
+  // The detail switch limits cost; all animation stops when hidden or paused.
   function installAmbientField() {
     const field = document.querySelector('.ambient-canvas');
     const ctx = field.getContext('2d');
     if (!ctx) return;
-    const small = matchMedia('(max-width:600px)');
-    let width = 0, height = 0, request = 0, previous = 0, phase = 0;
+    let width = 0, height = 0, request = 0, previous = 0, phase = 0, elapsed = 0;
     let isLight = document.body.classList.contains('light');
     let scrollPhase = scrollY * .00035;
     let targetX = .5, targetY = .5, driftX = .5, driftY = .5;
-    const motes = Array.from({length:42},(_,index) => ({
+    const motes = Array.from({length:96},(_,index) => ({
       x:(index * .618034) % 1,
       y:(index * .754878) % 1,
       speed:.3 + (index % 5) * .1,
-      size:index % 7 === 0 ? 1.5 : .7,
+      size:index % 7 === 0 ? 1.65 : .8,
       offset:index * 1.8
     }));
     function render() {
@@ -201,36 +263,49 @@
       ctx.clearRect(0,0,width,height);
       const tint = isLight ? '108,78,160' : '174,144,241';
       const cool = isLight ? '61,105,164' : '131,185,236';
-      const alpha = isLight ? .1 : .14;
+      const ultra = quality() === 'ultra';
+      const lines = ultra ? 15 : 7;
+      const steps = ultra ? 100 : 52;
+      const alpha = isLight ? .14 : .28;
+      const scale = Math.max(.8,Math.min(1.8,width / 1500));
+      // Twisted ribbons: spatially coherent strands, not a video or a bitmap.
       for (let ribbon = 0; ribbon < 3; ribbon++) {
-        const base = height * (.22 + ribbon * .3);
-        for (let line = 0; line < 5; line++) {
+        const base = height * (.12 + ribbon * .38);
+        for (let line = 0; line < lines; line++) {
+          const strand = line / (lines - 1);
           const gradient = ctx.createLinearGradient(0,0,width,0);
           gradient.addColorStop(0,'rgba(' + tint + ',0)');
-          gradient.addColorStop(.25,'rgba(' + tint + ',' + (alpha * (1 - line * .12)) + ')');
-          gradient.addColorStop(.65,'rgba(' + cool + ',' + (alpha * .65) + ')');
+          gradient.addColorStop(.2,'rgba(' + tint + ',' + (alpha * (.35 + strand * .65)) + ')');
+          gradient.addColorStop(.65,'rgba(' + cool + ',' + (alpha * .75) + ')');
           gradient.addColorStop(1,'rgba(' + cool + ',0)');
           ctx.strokeStyle = gradient;
-          ctx.lineWidth = line === 0 ? 1 : .5;
+          ctx.lineWidth = (line === 0 ? 1.6 : .65) * scale;
           ctx.beginPath();
-          for (let step = 0; step <= 56; step++) {
-            const x = step / 56 * width;
-            const wave = Math.sin(step / 56 * 5 + phase * .22 + ribbon * 1.9 + scrollPhase);
-            const second = Math.cos(step / 56 * 3 - phase * .16 + ribbon);
-            const y = base + wave * height * .07 + second * height * .055 + line * 7 + (driftY - .5) * 18;
+          for (let step = 0; step <= steps; step++) {
+            const fraction = step / steps;
+            const x = fraction * width;
+            const wave = Math.sin(fraction * 6 + phase * .28 + ribbon * 1.9 + scrollPhase);
+            const twist = Math.cos(fraction * 4.5 - phase * .24 + strand * 2.2 + ribbon);
+            const y = base + wave * height * .12 + twist * height * .045 + (strand - .5) * height * .13 * Math.sin(fraction * 3 + phase * .16 + ribbon) + (driftY - .5) * 28;
             if (!step) ctx.moveTo(x,y); else ctx.lineTo(x,y);
           }
           ctx.stroke();
         }
       }
-      const count = small.matches ? 24 : motes.length;
+      const count = ultra ? motes.length : 32;
+      let lastPoint = null;
       for (let i = 0; i < count; i++) {
         const mote = motes[i];
         const x = ((mote.x + Math.sin(phase * .12 + mote.offset) * .028 + (driftX - .5) * .009 + 1) % 1) * width;
         const y = (((mote.y - phase * .007 * mote.speed - scrollPhase * .012) % 1 + 1) % 1) * height;
         const opacity = .12 + (Math.sin(phase * .6 + mote.offset) + 1) * .13;
         ctx.fillStyle = 'rgba(' + (i % 2 ? tint : cool) + ',' + opacity + ')';
-        ctx.beginPath(); ctx.arc(x,y,mote.size,0,Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(x,y,mote.size * scale,0,Math.PI * 2); ctx.fill();
+        if (ultra && lastPoint && Math.hypot(x - lastPoint.x,y - lastPoint.y) < width * .16) {
+          ctx.strokeStyle = 'rgba(' + cool + ',.055)'; ctx.lineWidth = .6 * scale;
+          ctx.beginPath(); ctx.moveTo(lastPoint.x,lastPoint.y); ctx.lineTo(x,y); ctx.stroke();
+        }
+        lastPoint = {x,y};
         if (i % 7 === 0) {
           ctx.strokeStyle = 'rgba(' + tint + ',' + opacity * .32 + ')'; ctx.lineWidth = .6;
           ctx.beginPath(); ctx.moveTo(x-4,y); ctx.lineTo(x+4,y); ctx.moveTo(x,y-4); ctx.lineTo(x,y+4); ctx.stroke();
@@ -240,20 +315,24 @@
     function animate(now) {
       request = 0;
       if (!enabled() || document.hidden) return;
-      if (now - previous >= 1000 / (small.matches ? 20 : 24)) {
-        const delta = Math.min(now - (previous || now),90) / 1000;
-        phase += delta;
-        scrollPhase += (scrollY * .00035 - scrollPhase) * .045;
-        driftX += (targetX - driftX) * .05;
-        driftY += (targetY - driftY) * .05;
-        previous = now;
+      const delta = previous ? Math.min(now - previous,100) : 0;
+      previous = now;
+      elapsed += delta;
+      phase += delta / 1000;
+      const interval = 1000 / (quality() === 'ultra' && !compactScreen.matches ? 60 : 30);
+      if (elapsed + .5 >= interval) {
+        const ease = 1 - Math.exp(-elapsed / 300);
+        scrollPhase += (scrollY * .00035 - scrollPhase) * ease;
+        driftX += (targetX - driftX) * ease;
+        driftY += (targetY - driftY) * ease;
+        elapsed = 0;
         render();
       }
       request = requestAnimationFrame(animate);
     }
     function syncField() {
       if (request) cancelAnimationFrame(request);
-      request = 0; previous = 0;
+      request = 0; previous = 0; elapsed = 0;
       const active = enabled() && !document.hidden;
       field.dataset.running = String(active);
       if (active) request = requestAnimationFrame(animate);
@@ -262,9 +341,10 @@
     function resizeField() {
       const rect = field.getBoundingClientRect();
       width = rect.width; height = rect.height;
-      const ratio = Math.min(devicePixelRatio || 1,small.matches ? 1 : 1.5);
-      field.width = Math.round(width * ratio); field.height = Math.round(height * ratio);
-      ctx.setTransform(ratio,0,0,ratio,0,0);
+      const pixels = canvasSize(width,height,devicePixelRatio,quality(),'ambient');
+      field.width = pixels.width; field.height = pixels.height;
+      field.dataset.resolution = `${pixels.width}×${pixels.height}`;
+      ctx.setTransform(pixels.scaleX,0,0,pixels.scaleY,0,0);
       render();
     }
     addEventListener('pointermove',event => {
@@ -277,6 +357,7 @@
     new MutationObserver(() => { isLight = document.body.classList.contains('light'); render(); }).observe(document.body,{attributes:true,attributeFilter:['class']});
     document.addEventListener('visibilitychange',syncField);
     listeners.push(syncField);
+    qualityListeners.push(() => { resizeField(); syncField(); });
     resizeField(); syncField();
   }
   installAmbientField();
@@ -284,11 +365,10 @@
   const canvas = document.querySelector('.network-canvas');
   const context = canvas.getContext('2d');
   if (!context) return;
-  const compact = matchMedia('(max-width: 600px)').matches;
   const boostButton = document.querySelector('.core-boost');
   const boostLabel = boostButton.querySelector('span');
   const TAU = Math.PI * 2;
-  const sparks = Array.from({ length:compact ? 48 : 85 }, (_, index) => ({
+  const sparks = Array.from({ length:140 }, (_, index) => ({
     phase:((index * .61803398875) % 1) * TAU,
     radius:.2 + ((index * .381966) % 1) * .26,
     speed:.12 + (index % 7) * .03,
@@ -299,6 +379,7 @@
   let size = 0;
   let frame = 0;
   let lastTime = 0;
+  let coreElapsed = 0;
   let time = .6;
   let charge = 0;
   let boostUntil = 0;
@@ -392,7 +473,8 @@
       }
     }
     context.restore();
-    sparks.forEach((spark,index) => {
+    const sparkCount = quality() === 'ultra' ? 140 : 48;
+    sparks.slice(0,sparkCount).forEach((spark,index) => {
       const phase = spark.phase + time * spark.speed;
       const radius = size * (spark.radius + Math.sin(time * .2 + index) * .014);
       const x = size * .5 + Math.cos(phase) * radius;
@@ -401,25 +483,49 @@
       context.fillStyle = 'rgba(' + palette[spark.tint] + ',' + alpha + ')';
       context.beginPath(); context.arc(x,y,spark.size,0,TAU); context.fill();
     });
+    // A slowly precessing wireframe sphere adds true projected depth to the core.
+    const meridians = quality() === 'ultra' ? 14 : 7;
+    for (let longitude = 0; longitude < meridians; longitude++) {
+      const turn = longitude / meridians * Math.PI * 2 + time * .085;
+      context.beginPath();
+      for (let point = 0; point <= 44; point++) {
+        const latitude = point / 44 * Math.PI;
+        const radius = size * .325;
+        const x = Math.sin(latitude) * Math.cos(turn) * radius;
+        const z = Math.sin(latitude) * Math.sin(turn) * radius;
+        const y = Math.cos(latitude) * radius;
+        const screenX = size * .5 + x + z * .18;
+        const screenY = size * .5 + y * .84 + z * .25;
+        if (!point) context.moveTo(screenX,screenY); else context.lineTo(screenX,screenY);
+      }
+      context.strokeStyle = `rgba(${palette[1]},${light ? .12 : .11 + charge * .1})`;
+      context.lineWidth = .6;
+      context.stroke();
+    }
     for (let ring = 2; ring >= 0; ring--) strokeRing(ring,palette[ring]);
   }
 
   function tick(now) {
     frame = 0;
     if (!visible || document.hidden || !enabled()) return;
-    if (now - lastTime >= 1000 / (compact ? 30 : 45)) {
-      const delta = Math.min(now - (lastTime || now),70) / 1000;
+    const frameDelta = lastTime ? Math.min(now - lastTime,100) : 0;
+    coreElapsed += frameDelta;
+    time += frameDelta / 1000 * (1 + charge * 2.8);
+    lastTime = now;
+    const interval = 1000 / (quality() === 'ultra' && !compactScreen.matches ? 60 : 30);
+    if (coreElapsed + .5 >= interval) {
+      const delta = coreElapsed / 1000;
+      const smoothing = 1 - Math.exp(-delta * 5);
       const boosting = now < boostUntil;
-      charge += ((boosting ? 1 : 0) - charge) * .065;
-      time += delta * (1 + charge * 2.8);
-      pointer.x += (pointer.tx - pointer.x) * .07;
-      pointer.y += (pointer.ty - pointer.y) * .07;
+      charge += ((boosting ? 1 : 0) - charge) * smoothing;
+      pointer.x += (pointer.tx - pointer.x) * smoothing;
+      pointer.y += (pointer.ty - pointer.y) * smoothing;
       if (!boosting && boostButton.getAttribute('aria-pressed') === 'true') {
         visual.classList.remove('is-charged');
         boostButton.setAttribute('aria-pressed','false');
         boostLabel.textContent = 'Power up';
       }
-      lastTime = now;
+      coreElapsed = 0;
       draw();
     }
     frame = requestAnimationFrame(tick);
@@ -428,7 +534,9 @@
     if (frame) cancelAnimationFrame(frame);
     frame = 0;
     lastTime = 0;
+    coreElapsed = 0;
     const active = visible && !document.hidden && enabled();
+    canvas.dataset.running = String(active);
     hero.classList.toggle('scene-paused', !active);
     boostButton.disabled = !enabled();
     if (!enabled()) {
@@ -443,10 +551,11 @@
   }
   function resize() {
     size = canvas.getBoundingClientRect().width;
-    const ratio = Math.min(devicePixelRatio || 1, compact ? 1.5 : 2);
-    canvas.width = Math.round(size * ratio);
-    canvas.height = Math.round(size * ratio);
-    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    const pixels = canvasSize(size,size,devicePixelRatio,quality(),'core');
+    canvas.width = pixels.width;
+    canvas.height = pixels.height;
+    canvas.dataset.resolution = `${pixels.width}×${pixels.height}`;
+    context.setTransform(pixels.scaleX, 0, 0, pixels.scaleY, 0, 0);
     draw();
   }
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas);
@@ -460,6 +569,7 @@
   }).observe(document.body, { attributes:true, attributeFilter:['class'] });
   document.addEventListener('visibilitychange', sync);
   listeners.push(sync);
+  qualityListeners.push(() => { resize(); sync(); });
   resize();
   sync();
 })();
