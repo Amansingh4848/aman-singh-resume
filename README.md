@@ -22,11 +22,12 @@ An animated, responsive portfolio for Aman Singh Suneo, with dedicated Trading W
 - GitHub profile beside LinkedIn on the front page only: https://github.com/Amansingh4848. No separate GitHub destination or GitHub links on creator pages.
 - Interactive trading learning lab: up/down candlestick anatomy, range/breakout, double-top and ascending-triangle diagrams, and an illustrative Nifty option chain with selectable strikes and field explanations.
 - Option-chain examples are synthetic and fixed, not real exchange prices or model-generated valuations. Pure calculations demonstrate intrinsic value and moneyness without trading recommendations. Greeks, execution risk and failure scenarios are explained alongside the graphics.
-- Basic covers market and risk foundations; Normal includes Basic plus price-action practice and option-chain introductions; Advanced includes Normal plus option sensitivities, hypothetical spreads and research pitfalls. The curriculum is an outline to confirm before enrollment, not a promise of returns, certification, class duration or support entitlements.
+- Trade Zuko includes 16 authored study chapters, 32 original pattern illustrations, an 11-structure options payoff lab, risk/expectancy exercises and a browser-local journal. The public library is open; the installable app requires a learner or owner password.
+- Basic: 24 modules, ₹10,000, 4–5 weeks. Intermediate: 18 deeper modules, ₹20,000, 6–7 weeks. Advanced: 20 deeper modules, ₹30,000, 8–10 weeks. Earlier-level learning is included. The owner confirmed these offers and incremental ₹10,000 upgrades (₹30,000 total through Advanced). No returns, certification or unspecified bonus entitlements are promised.
 - Live YouTube RSS feeds for the latest 15 uploads on each channel, plus on-demand uploads-playlist players and full-channel links.
 - Trading education enquiry cards at ₹10,000, ₹20,000 and ₹30,000. WhatsApp links open a pre-filled draft to +91 90981 03580; no message or payment is sent automatically.
 - Clearly visible educational-risk, non-refundable-fee and consumer-rights notices. Confirm syllabus, duration, schedule, taxes and terms with the student before accepting payment.
-- Crawlable pages, canonical URLs, Person / ProfilePage / WebSite metadata, breadcrumbs, social previews and a four-page sitemap.
+- Crawlable public pages, canonical URLs, Person / ProfilePage / WebSite metadata, learning-resource metadata, breadcrumbs and social previews. The sitemap includes the nested public study pages; app login is noindex.
 
 ## Run locally
 
@@ -41,6 +42,28 @@ python -m http.server 8000
 Then open [localhost:8000](http://localhost:8000). With a basic static server, open the `.html` pages directly; API feeds and extensionless routing require Vercel. Selected linked videos remain as a fallback.
 
 ## Project files
+
+- `trading/source/lessons.cjs`, `patterns.cjs`, `courses.json`: original lesson content, pattern catalogue and owner-confirmed offers.
+- `trading/source/build.cjs`: deterministic static-page builder. Run `node trading/source/build.cjs` after content changes. It also produces the app's public educational payload and sitemap.
+- `trading/learning.css`, `learning.js`, `math.js`: shared study UI, local progress/journal and pure, testable calculator logic.
+- `trading/app.html`, `app.js`, `manifest.webmanifest`, `sw.js`: installable Trade Zuko web app. Protected content is never cached; internet is required.
+- `api/trade-access.js`, `trading/source/auth.cjs`: server-side password verification and owner controls. Password hashes, a signing key and version counters live in a **private** Vercel Blob store, not in source control. Reads bypass storage caching, writes use ETag-based concurrency protection.
+
+## Trade Zuko access management
+
+The app has two separate shared passwords: learner and owner. Only owner login can change them. Owner changes require the current owner password and a session-bound CSRF token. Credentials use independently salted scrypt (N=131072, r=8, p=1). Sessions use signed Secure, HttpOnly, SameSite=Strict cookies; learner sessions last at most 12 hours and owner sessions at most 1 hour. Password changes invalidate the corresponding version on the next protected request. Active apps recheck approximately once a minute and when returning to the foreground. This cannot revoke copies or screenshots already taken.
+
+At `/trading/app`, select **Owner — Aman only**, log in, and use **Change the learner password** or **Change your owner password**. Use distinct passwords of 15–128 characters. Keep owner access and the recovery key private; share only the learner password. Recovery is available under **Owner: recover access**. The private handoff guide is outside this repository; it is never deployed or committed. Changing passwords does not update that guide automatically.
+
+This is not individual student-account management, a payment gateway or enrollment verification. Public website lessons remain public. Durable attempt limits allow eight credential attempts per IP per 15 minutes and 80 total per 15 minutes; limits can temporarily affect shared networks. Security counters keep a keyed hash of the request IP, not the raw IP, and expired entries are removed on subsequent authentication attempts. Hosting-provider access logs have their own retention. Browser read markers and study notes are local and are not sent to the owner.
+
+Development needs `npm ci`, a project-linked **private** Blob store and the Vercel-managed server environment variables. Never prefix storage credentials with a client-exposed prefix or place them in JavaScript/HTML. The endpoint fails closed when storage is unavailable. No database credentials, initial passwords or recovery keys belong in GitHub.
+
+## Commercial hosting requirement
+
+Vercel's Hobby plan is restricted to non-commercial personal use. Confirm an appropriate commercial hosting plan before operating paid course offers. No paid plan or trial was purchased by this implementation. Storage and function availability also depend on the host's usage limits; monitor them before admitting learners. See [Vercel Hobby terms](https://vercel.com/docs/plans/hobby).
+
+## Existing portfolio files
 
 - `index.html`: page content and profile links.
 - `trading.html`, `youtube.html`, `instagram.html`: dedicated creator pages.

@@ -1,0 +1,950 @@
+[
+  {
+    "id": "basic",
+    "name": "Basic",
+    "title": "Trader Foundation",
+    "price": 10000,
+    "duration": "4–5 weeks",
+    "promise": "Build your trading foundation",
+    "description": "A broad foundation across stocks, options, crypto and currencies. Understand charts, risk, a trading plan and a repeatable review process without needing to buy a higher level.",
+    "project": "Personal trading plan",
+    "modules": [
+      {
+        "number": 1,
+        "title": "INTRODUCTION TO FINANCIAL MARKETS",
+        "topics": [
+          "What is trading?",
+          "What is investing?",
+          "Trading vs investing",
+          "Stock market",
+          "Derivatives market",
+          "Options market",
+          "Cryptocurrency market",
+          "Currency market",
+          "NSE",
+          "BSE",
+          "NIFTY",
+          "BANK NIFTY",
+          "SENSEX",
+          "Stocks",
+          "Indices",
+          "Market sectors",
+          "Scalping introduction",
+          "Intraday trading",
+          "Swing trading",
+          "Positional trading",
+          "Investing"
+        ]
+      },
+      {
+        "number": 2,
+        "title": "TRADING PLATFORM & CHART SETUP",
+        "topics": [
+          "TradingView",
+          "Broker terminal",
+          "Watchlist creation",
+          "Chart setup",
+          "Timeframes",
+          "Drawing tools",
+          "Indicators",
+          "Trading alerts",
+          "Market Order",
+          "Limit Order",
+          "Stop Loss",
+          "Stop-Loss Market",
+          "Target Order",
+          "Brokerage",
+          "Charges",
+          "Profit and loss",
+          "Paper trading",
+          "Live trading risks"
+        ]
+      },
+      {
+        "number": 3,
+        "title": "CANDLESTICK ANALYSIS",
+        "topics": [
+          "Open",
+          "High",
+          "Low",
+          "Close",
+          "Bullish candle",
+          "Bearish candle",
+          "Doji",
+          "Hammer",
+          "Shooting Star",
+          "Pin Bar",
+          "Inside Bar",
+          "Bullish Engulfing",
+          "Bearish Engulfing"
+        ]
+      },
+      {
+        "number": 4,
+        "title": "MARKET STRUCTURE",
+        "topics": [
+          "Uptrend",
+          "Downtrend",
+          "Sideways market",
+          "Higher High",
+          "Higher Low",
+          "Lower High",
+          "Lower Low",
+          "Trend continuation",
+          "Trend reversal",
+          "Break of structure",
+          "Change in market behaviour"
+        ]
+      },
+      {
+        "number": 5,
+        "title": "SUPPORT & RESISTANCE",
+        "topics": [
+          "Support",
+          "Resistance",
+          "Major levels",
+          "Minor levels",
+          "Previous-day high",
+          "Previous-day low",
+          "Previous-week high",
+          "Previous-week low",
+          "Psychological levels",
+          "Breakout",
+          "Retest",
+          "False breakout"
+        ]
+      },
+      {
+        "number": 6,
+        "title": "PRICE ACTION TRADING",
+        "topics": [
+          "Support & Resistance",
+          "Candlestick Behaviour",
+          "Volume",
+          "Breakout",
+          "Breakout and retest",
+          "Trend continuation",
+          "Support reversal",
+          "Resistance reversal",
+          "Range breakout",
+          "False breakout"
+        ]
+      },
+      {
+        "number": 7,
+        "title": "TECHNICAL INDICATORS",
+        "topics": [
+          "Moving Average",
+          "EMA",
+          "RSI",
+          "VWAP",
+          "MACD",
+          "Volume"
+        ]
+      },
+      {
+        "number": 8,
+        "title": "TRADE PLANNING",
+        "topics": [
+          "Before taking any trade, students learn to define:",
+          "ENTRY",
+          "Where will I enter?",
+          "STOP LOSS",
+          "Where is my trading idea invalid?",
+          "TARGET",
+          "Where will I exit?",
+          "POSITION SIZE",
+          "How much should I trade?",
+          "RISK",
+          "How much capital am I willing to risk?",
+          "Complete process:",
+          "Entry → Stop Loss → Target → Risk → Quantity"
+        ]
+      },
+      {
+        "number": 9,
+        "title": "RISK MANAGEMENT",
+        "topics": [
+          "Capital protection",
+          "Risk per trade",
+          "Position sizing",
+          "Risk/reward ratio",
+          "Daily loss limit",
+          "Maximum trades per day",
+          "Maximum acceptable drawdown",
+          "Over-leveraging",
+          "Revenge trading",
+          "Overtrading",
+          "Averaging losing trades",
+          "Protecting trading capital"
+        ]
+      },
+      {
+        "number": 10,
+        "title": "TRADING PSYCHOLOGY",
+        "topics": [
+          "Fear",
+          "Greed",
+          "FOMO",
+          "Revenge trading",
+          "Overconfidence",
+          "Impulsive trading",
+          "Trading after a loss",
+          "Trading after a big profit",
+          "Patience",
+          "Discipline",
+          "Following a trading plan"
+        ]
+      },
+      {
+        "number": 11,
+        "title": "OPTIONS TRADING FOUNDATION",
+        "topics": [
+          "What are derivatives?",
+          "Futures introduction",
+          "Options introduction",
+          "Call Option",
+          "Put Option",
+          "Strike Price",
+          "Premium",
+          "Expiry",
+          "Lot Size",
+          "ATM",
+          "ITM",
+          "OTM",
+          "Option Buyer",
+          "Option Seller",
+          "Premium movement",
+          "Leverage",
+          "Expiry risk",
+          "Time decay"
+        ]
+      },
+      {
+        "number": 12,
+        "title": "OPTION CHAIN",
+        "topics": [
+          "Call OI",
+          "Put OI",
+          "Open Interest",
+          "Change in OI",
+          "Volume",
+          "PCR",
+          "Important strike prices",
+          "Option-chain support",
+          "Option-chain resistance"
+        ]
+      },
+      {
+        "number": 13,
+        "title": "OPTION GREEKS",
+        "topics": [
+          "Delta",
+          "How option premium may react to movement in the underlying.",
+          "Theta",
+          "Effect of time decay.",
+          "Vega",
+          "Effect of volatility.",
+          "Gamma",
+          "How Delta changes."
+        ]
+      },
+      {
+        "number": 14,
+        "title": "BASIC OPTIONS TRADING SETUPS",
+        "topics": [
+          "Price Action",
+          "Support/Resistance",
+          "Confirmation",
+          "Risk Management",
+          "Trend continuation",
+          "Breakout",
+          "Breakout-retest",
+          "Support reversal",
+          "Resistance reversal",
+          "VWAP setup"
+        ]
+      },
+      {
+        "number": 15,
+        "title": "SWING TRADING",
+        "topics": [
+          "How to select stocks",
+          "Finding strong trends",
+          "Breakout stocks",
+          "Entry",
+          "Stop loss",
+          "Target",
+          "Position sizing",
+          "Overnight risk",
+          "Gap risk",
+          "Holding period"
+        ]
+      },
+      {
+        "number": 16,
+        "title": "CRYPTO TRADING FOUNDATION",
+        "topics": [
+          "What is cryptocurrency?",
+          "Bitcoin",
+          "Ethereum",
+          "Altcoins",
+          "Crypto exchanges",
+          "Spot trading",
+          "Futures introduction",
+          "Leverage",
+          "Liquidation",
+          "24/7 markets",
+          "Crypto volatility",
+          "Market structure",
+          "Support",
+          "Resistance",
+          "Price action",
+          "Volume",
+          "Risk management"
+        ]
+      },
+      {
+        "number": 17,
+        "title": "CURRENCY TRADING FOUNDATION",
+        "topics": [
+          "What is currency trading?",
+          "Forex-market concept",
+          "Exchange-traded currency derivatives",
+          "Currency pairs",
+          "Base currency",
+          "Quote currency",
+          "USD/INR",
+          "EUR/USD",
+          "GBP/USD",
+          "USD/JPY",
+          "EUR/GBP"
+        ]
+      },
+      {
+        "number": 18,
+        "title": "CURRENCY MARKET TERMINOLOGY",
+        "topics": [
+          "Pip",
+          "Spread",
+          "Bid",
+          "Ask",
+          "Lot",
+          "Margin",
+          "Leverage",
+          "Currency volatility"
+        ]
+      },
+      {
+        "number": 19,
+        "title": "CURRENCY MARKET SESSIONS",
+        "topics": [
+          "Asian Session",
+          "London Session",
+          "New York Session",
+          "London–New York Overlap"
+        ]
+      },
+      {
+        "number": 20,
+        "title": "CURRENCY PRICE ACTION",
+        "topics": [
+          "Market Structure",
+          "Support/Resistance",
+          "Price Action",
+          "Risk Management",
+          "Trend continuation",
+          "Breakout",
+          "Breakout-retest",
+          "Support reversal",
+          "Resistance reversal",
+          "Session breakout introduction"
+        ]
+      },
+      {
+        "number": 21,
+        "title": "WHAT MOVES CURRENCIES?",
+        "topics": [
+          "Interest rates",
+          "Inflation",
+          "Central banks",
+          "Employment data",
+          "GDP",
+          "Economic growth",
+          "Market sentiment",
+          "Major global events"
+        ]
+      },
+      {
+        "number": 22,
+        "title": "BUILD YOUR OWN TRADING STRATEGY",
+        "topics": [
+          "Market",
+          "Timeframe",
+          "Setup",
+          "Entry",
+          "Stop Loss",
+          "Target",
+          "Position Size",
+          "Maximum Risk",
+          "Maximum Trades",
+          "No-Trade Conditions"
+        ]
+      },
+      {
+        "number": 23,
+        "title": "BACKTESTING",
+        "topics": [
+          "What is backtesting?",
+          "Historical testing",
+          "Sample size",
+          "Win rate",
+          "Average win",
+          "Average loss",
+          "Risk/reward",
+          "Drawdown",
+          "Trading costs"
+        ]
+      },
+      {
+        "number": 24,
+        "title": "TRADING JOURNAL",
+        "topics": [
+          "Date",
+          "Market",
+          "Instrument",
+          "Strategy",
+          "Entry",
+          "Stop Loss",
+          "Target",
+          "Quantity",
+          "Risk",
+          "Outcome",
+          "Screenshot",
+          "Mistake",
+          "Psychology",
+          "Lesson"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "intermediate",
+    "name": "Intermediate",
+    "title": "Multi-Market Trader",
+    "price": 20000,
+    "duration": "6–7 weeks",
+    "promise": "Develop multi-market trading skills",
+    "description": "Includes the foundation and develops price-action analysis, options structures, currency fundamentals, crypto market mechanics and performance review.",
+    "project": "Multi-market trading playbook",
+    "modules": [
+      {
+        "number": 1,
+        "title": "Advanced Price Action",
+        "topics": [
+          "Supply and demand",
+          "Momentum",
+          "Compression",
+          "Expansion",
+          "False breakout",
+          "Market rejection"
+        ]
+      },
+      {
+        "number": 2,
+        "title": "Advanced Market Structure",
+        "topics": [
+          "Internal market structure",
+          "External market structure",
+          "Structure shifts",
+          "Trend exhaustion",
+          "Reversal confirmation"
+        ]
+      },
+      {
+        "number": 3,
+        "title": "Liquidity Concepts",
+        "topics": [
+          "Buy-side liquidity",
+          "Sell-side liquidity",
+          "Equal highs",
+          "Equal lows",
+          "Liquidity sweep",
+          "Previous session levels"
+        ]
+      },
+      {
+        "number": 4,
+        "title": "Multi-Timeframe Analysis",
+        "topics": [
+          "Daily",
+          "4 Hour",
+          "1 Hour",
+          "15 Minute",
+          "Entry"
+        ]
+      },
+      {
+        "number": 5,
+        "title": "Advanced Volume Analysis",
+        "topics": [
+          "Price-volume relationship",
+          "Volume confirmation",
+          "Volume expansion",
+          "Volume contraction",
+          "Volume divergence"
+        ]
+      },
+      {
+        "number": 6,
+        "title": "ADVANCED OPTIONS GREEKS",
+        "topics": [
+          "Delta",
+          "Gamma",
+          "Theta",
+          "Vega",
+          "Implied Volatility"
+        ]
+      },
+      {
+        "number": 7,
+        "title": "IMPLIED VOLATILITY",
+        "topics": [
+          "High IV",
+          "Low IV",
+          "IV expansion",
+          "IV contraction",
+          "Event volatility",
+          "Volatility risk"
+        ]
+      },
+      {
+        "number": 8,
+        "title": "OPTION CHAIN ANALYSIS",
+        "topics": [
+          "OI",
+          "Change in OI",
+          "Volume",
+          "PCR",
+          "Strike analysis",
+          "Price + OI interpretation"
+        ]
+      },
+      {
+        "number": 9,
+        "title": "OPTIONS STRATEGIES",
+        "topics": [
+          "Long Call",
+          "Long Put",
+          "Bull Call Spread",
+          "Bear Put Spread",
+          "Protective Put",
+          "Covered Call concept"
+        ]
+      },
+      {
+        "number": 10,
+        "title": "NIFTY & BANK NIFTY TRADING",
+        "topics": [
+          "Gap Up",
+          "Gap Down",
+          "Opening Range",
+          "Trend Day",
+          "Range Day",
+          "Breakouts",
+          "Expiry-day risk"
+        ]
+      },
+      {
+        "number": 11,
+        "title": "ADVANCED STOCK SELECTION",
+        "topics": [
+          "Relative strength",
+          "Sector strength",
+          "Volume",
+          "Momentum",
+          "Swing stocks",
+          "Breakout stocks"
+        ]
+      },
+      {
+        "number": 12,
+        "title": "INTERMEDIATE CRYPTO",
+        "topics": [
+          "Bitcoin market structure",
+          "Ethereum",
+          "Altcoins",
+          "Spot trading",
+          "Futures",
+          "Funding rate",
+          "Open interest",
+          "Liquidations",
+          "Leverage management"
+        ]
+      },
+      {
+        "number": 13,
+        "title": "INTERMEDIATE CURRENCY TRADING",
+        "topics": [
+          "Major pairs",
+          "Cross pairs",
+          "Session behaviour",
+          "Session high/low",
+          "Currency correlations",
+          "Currency strength",
+          "Multi-timeframe trading"
+        ]
+      },
+      {
+        "number": 14,
+        "title": "CURRENCY FUNDAMENTAL ANALYSIS",
+        "topics": [
+          "Central banks",
+          "Interest-rate decisions",
+          "Inflation",
+          "GDP",
+          "Employment data",
+          "Economic expectations"
+        ]
+      },
+      {
+        "number": 15,
+        "title": "ECONOMIC CALENDAR",
+        "topics": [
+          "Previous Data",
+          "Forecast Data",
+          "Actual Data",
+          "High-impact news",
+          "Event risk"
+        ]
+      },
+      {
+        "number": 16,
+        "title": "CENTRAL BANKS",
+        "topics": [
+          "RBI",
+          "US Federal Reserve",
+          "European Central Bank",
+          "Bank of England",
+          "Bank of Japan"
+        ]
+      },
+      {
+        "number": 17,
+        "title": "ADVANCED RISK MANAGEMENT",
+        "topics": [
+          "Multiple-position risk",
+          "Correlated trades",
+          "Daily risk",
+          "Weekly limits",
+          "Drawdowns",
+          "Losing streaks",
+          "Reducing leverage"
+        ]
+      },
+      {
+        "number": 18,
+        "title": "TRADING PERFORMANCE ANALYTICS",
+        "topics": [
+          "Win rate",
+          "Average win",
+          "Average loss",
+          "Expectancy",
+          "Profit factor",
+          "Drawdown",
+          "Winning streak",
+          "Losing streak"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "advanced",
+    "name": "Advanced",
+    "title": "Trading Specialist",
+    "price": 30000,
+    "duration": "8–10 weeks",
+    "promise": "Build advanced trading systems",
+    "description": "Includes earlier levels and studies advanced options, macro and intermarket context, portfolio risk, systematic testing and TradingView/Pine Script concepts.",
+    "project": "Complete trading-system playbook",
+    "modules": [
+      {
+        "number": 1,
+        "title": "Professional Market Structure",
+        "topics": [
+          "Advanced structure",
+          "Market imbalance",
+          "Liquidity mapping",
+          "Failed breakouts",
+          "Multi-session analysis"
+        ]
+      },
+      {
+        "number": 2,
+        "title": "ORDER FLOW INTRODUCTION",
+        "topics": [
+          "Bid",
+          "Ask",
+          "Market orders",
+          "Limit orders",
+          "Aggressive buyers",
+          "Aggressive sellers",
+          "Liquidity",
+          "Market depth"
+        ]
+      },
+      {
+        "number": 3,
+        "title": "ADVANCED OPTIONS GREEKS",
+        "topics": [
+          "Delta exposure",
+          "Gamma",
+          "Theta",
+          "Vega",
+          "Volatility",
+          "Expiry dynamics"
+        ]
+      },
+      {
+        "number": 4,
+        "title": "ADVANCED OPTIONS STRATEGIES",
+        "topics": [
+          "Bull Call Spread",
+          "Bear Put Spread",
+          "Iron Condor",
+          "Iron Butterfly",
+          "Calendar Spread",
+          "Diagonal Spread",
+          "Hedging concepts",
+          "Ratio-strategy risks"
+        ]
+      },
+      {
+        "number": 5,
+        "title": "VOLATILITY ANALYSIS",
+        "topics": [
+          "Historical volatility",
+          "Implied volatility",
+          "IV expansion",
+          "IV contraction",
+          "Volatility regimes",
+          "Event volatility"
+        ]
+      },
+      {
+        "number": 6,
+        "title": "PORTFOLIO RISK MANAGEMENT",
+        "topics": [
+          "Portfolio exposure",
+          "Correlation",
+          "Risk concentration",
+          "Daily risk limits",
+          "Weekly risk",
+          "Monthly drawdown",
+          "Capital allocation",
+          "Scaling strategies",
+          "Risk-of-ruin concept"
+        ]
+      },
+      {
+        "number": 7,
+        "title": "ADVANCED CRYPTO TRADING",
+        "topics": [
+          "Bitcoin cycles",
+          "Ethereum",
+          "Crypto derivatives",
+          "Funding rates",
+          "Open interest",
+          "Liquidations",
+          "Futures",
+          "Basis concepts",
+          "Crypto volatility",
+          "Cross-market analysis"
+        ]
+      },
+      {
+        "number": 8,
+        "title": "ADVANCED CURRENCY TRADING",
+        "topics": [
+          "Global currency-market structure",
+          "Major pairs",
+          "Cross pairs",
+          "Currency strength",
+          "Currency weakness",
+          "Session liquidity",
+          "London session",
+          "New York session",
+          "Asian session",
+          "Multi-session analysis"
+        ]
+      },
+      {
+        "number": 9,
+        "title": "MACROECONOMIC ANALYSIS",
+        "topics": [
+          "Inflation",
+          "Interest rates",
+          "Bond yields",
+          "Employment",
+          "GDP",
+          "Central-bank expectations",
+          "Currency movement"
+        ]
+      },
+      {
+        "number": 10,
+        "title": "INTERMARKET ANALYSIS",
+        "topics": [
+          "Stocks",
+          "Currencies",
+          "Dollar",
+          "Gold",
+          "Crude Oil",
+          "Bonds",
+          "Crypto",
+          "Correlation is used as additional context, not as a guaranteed signal."
+        ]
+      },
+      {
+        "number": 11,
+        "title": "CURRENCY RELATIVE STRENGTH",
+        "topics": [
+          "Strong currency",
+          "Weak currency",
+          "Pair selection",
+          "Market direction",
+          "Risk invalidation"
+        ]
+      },
+      {
+        "number": 12,
+        "title": "ADVANCED ECONOMIC EVENT RISK",
+        "topics": [
+          "Interest-rate announcements",
+          "Inflation reports",
+          "Employment data",
+          "Central-bank meetings",
+          "Major economic releases",
+          "Slippage",
+          "Spread expansion",
+          "Volatility spikes",
+          "Liquidity risk"
+        ]
+      },
+      {
+        "number": 13,
+        "title": "SYSTEMATIC TRADING",
+        "topics": [
+          "Turn subjective thinking into rules.",
+          "Instead of:",
+          "\"Market looks bullish.\"",
+          "Create:",
+          "\"If conditions A + B + C occur, then execute according to predefined Entry, Stop, Target and Risk.\""
+        ]
+      },
+      {
+        "number": 14,
+        "title": "ADVANCED BACKTESTING",
+        "topics": [
+          "Sample size",
+          "Expectancy",
+          "Drawdown",
+          "Profit factor",
+          "Market regimes",
+          "Slippage",
+          "Transaction costs",
+          "Overfitting",
+          "Out-of-sample testing concepts"
+        ]
+      },
+      {
+        "number": 15,
+        "title": "TRADINGVIEW & PINE SCRIPT",
+        "topics": [
+          "Pine Script",
+          "Indicators",
+          "Alerts",
+          "Strategy rules",
+          "Backtesting",
+          "Scanner concepts"
+        ]
+      },
+      {
+        "number": 16,
+        "title": "TRADING SCANNERS",
+        "topics": [
+          "Breakout stocks",
+          "Momentum stocks",
+          "High-volume stocks",
+          "Trending stocks",
+          "Swing opportunities"
+        ]
+      },
+      {
+        "number": 17,
+        "title": "ADVANCED PSYCHOLOGY",
+        "topics": [
+          "Probability thinking",
+          "Process vs outcome",
+          "Confirmation bias",
+          "Recency bias",
+          "Drawdown psychology",
+          "Discipline",
+          "Emotional decision-making"
+        ]
+      },
+      {
+        "number": 18,
+        "title": "PROFESSIONAL TRADING ROUTINE",
+        "topics": [
+          "Global market analysis",
+          "Market structure",
+          "Important levels",
+          "Economic calendar",
+          "Watchlist",
+          "Trading scenarios",
+          "Wait for setup",
+          "Confirm risk",
+          "Execute according to plan",
+          "Avoid impulsive trades",
+          "Screenshot",
+          "Journal",
+          "Review",
+          "Performance statistics",
+          "Mistake analysis"
+        ]
+      },
+      {
+        "number": 19,
+        "title": "BUILD A COMPLETE TRADING SYSTEM",
+        "topics": [
+          "Define:",
+          "Market",
+          "Setup",
+          "Entry",
+          "Stop Loss",
+          "Target",
+          "Risk",
+          "Position Size",
+          "Market Condition",
+          "No-Trade Condition",
+          "Exit Rules"
+        ]
+      },
+      {
+        "number": 20,
+        "title": "TRADING BUSINESS PLAN",
+        "topics": [
+          "Trading capital",
+          "Risk allocation",
+          "Drawdown limits",
+          "Performance review",
+          "Trading expenses",
+          "Capital scaling conditions",
+          "Withdrawal planning",
+          "Record keeping"
+        ]
+      }
+    ]
+  }
+]

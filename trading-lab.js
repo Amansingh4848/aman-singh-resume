@@ -11,7 +11,9 @@
   // Export pure learning calculations for regression tests without browser globals.
   if(typeof module!=='undefined'&&module.exports)module.exports={intrinsic,moneyness,patterns};
   if(typeof document==='undefined')return;
-  const $=selector=>document.querySelector(selector),all=selector=>[...document.querySelectorAll(selector)];
+  function init(scope=document){
+  const $=selector=>scope.querySelector(selector),all=selector=>[...scope.querySelectorAll(selector)];
+  const panel=$('.candle-panel');if(panel?.dataset.initialized)return;if(panel)panel.dataset.initialized='true';
   const select=(buttons,active)=>buttons.forEach(button=>button.setAttribute('aria-pressed',String(button===active)));
   const candleButtons=all('[data-candle]');
   candleButtons.forEach(button=>button.addEventListener('click',()=>{
@@ -50,4 +52,6 @@
     const field=fields[button.dataset.chain];if(!field)return;select(fieldButtons,button);$('.option-lab').dataset.chainField=button.dataset.chain;
     $('[data-field-title]').textContent=field.title;$('[data-field-copy]').textContent=field.copy;
   }));
+  }
+  window.TradeLab={init};init();
 })();
