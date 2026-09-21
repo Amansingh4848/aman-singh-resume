@@ -1,6 +1,6 @@
-# Aman Singh — Personal Portfolio
+# Aman Singh Suneo — Portfolio & Creator Worlds
 
-An animated, responsive portfolio and résumé website for Aman Singh, Business Development Executive.
+An animated, responsive portfolio for Aman Singh Suneo, with dedicated Trading World, YouTube and Instagram pages.
 
 **Live website:** [aman-singh-resume.vercel.app](https://aman-singh-resume.vercel.app/)
 
@@ -17,10 +17,16 @@ An animated, responsive portfolio and résumé website for Aman Singh, Business 
 - Image-led social gallery with Instagram / YouTube filters, linked original posts, animated photo frames and interactive video cards.
 - No résumé download buttons or download section. Previously created résumé files are retained unchanged.
 - Responsive layouts for desktop, tablet and mobile.
+- Four top-level pages: `/`, `/trading`, `/youtube`, and `/instagram`, linked from every page.
+- GitHub profile: https://github.com/Amansingh4848.
+- Live YouTube RSS feeds for the latest 15 uploads on each channel, plus on-demand uploads-playlist players and full-channel links.
+- Trading education enquiry cards at ₹10,000, ₹20,000 and ₹30,000. WhatsApp links open a pre-filled draft to +91 90981 03580; no message or payment is sent automatically.
+- Clearly visible educational-risk, non-refundable-fee and consumer-rights notices. Confirm syllabus, duration, schedule, taxes and terms with the student before accepting payment.
+- Crawlable pages, canonical URLs, Person / ProfilePage / WebSite metadata, breadcrumbs, social previews and a four-page sitemap.
 
 ## Run locally
 
-This is a static HTML, CSS and JavaScript website. No package installation or build step is required.
+The pages are static HTML, CSS and JavaScript. `api/youtube.js` is a dependency-free Vercel Node.js function. No client framework or build step is required. Deploy to Vercel (or use `vercel dev`) for clean URLs and the live API.
 
 From the repository directory, run:
 
@@ -28,11 +34,14 @@ From the repository directory, run:
 python -m http.server 8000
 ```
 
-Then open [localhost:8000](http://localhost:8000).
+Then open [localhost:8000](http://localhost:8000). With a basic static server, open the `.html` pages directly; API feeds and extensionless routing require Vercel. Selected linked videos remain as a fallback.
 
 ## Project files
 
 - `index.html`: page content and profile links.
+- `trading.html`, `youtube.html`, `instagram.html`: dedicated creator pages.
+- `worlds.css`, `worlds.js`, `channels.css`: lightweight shared page design and motion.
+- `feeds.js`, `api/youtube.js`: cached live YouTube cards and click-to-load platform embeds.
 - `styles.css`, `motion.css`, `cinematic.css`, `ambient.css`, `uhd.css`, `social.css`: layout, themes and animation styles.
 - `script.js`, `motion.js`, `motion-quality.js`: navigation, controls, pixel budgets and interactive motion.
 - `assets/`: website imagery.
@@ -45,6 +54,16 @@ The live website is hosted on Vercel. This repository contains the website sourc
 
 Animation uses vectors and real-time canvas, not a 4K video download. Ultra targets 60 frames per second on desktop; Balanced and phones target 30. Actual performance depends on the device. The background is capped at 8,294,400 pixels and the core at 4,194,304 pixels. Offscreen scenes and hidden tabs stop animating. The pause button and the device's reduced-motion setting disable decorative motion.
 
-Social images are optimized local WebP copies of photos and thumbnails from the owner's public profiles, used at their available source resolution (not advertised as 4K photography). These are selected snapshots, not an automatically updating feed. Cards open the original social post or video; no tracking embeds, autoplay or platform sign-in is needed to browse the gallery.
+Selected Instagram photos are optimized local WebP copies at the available source resolution, not 4K photography or an automatically synchronized custom photo grid. The Instagram page offers the official profile embed on request. Its availability depends on Meta's public-profile / embedding settings and browser restrictions; a link and styled fallback remain if it cannot render. Reliable custom Instagram auto-sync requires the owner's authorized Meta integration; no Instagram credentials are configured in this project.
+
+YouTube titles and thumbnails refresh from the two allowlisted public Atom feeds, cached for five minutes on the server and refreshed approximately every five minutes while the relevant section is visible. Platform caching can delay changes. Homepage YouTube cards also refresh. The full library is available through the official uploads playlist and channel links. Players and Instagram scripts only load on a visitor's click; there is no autoplay.
+
+## Search visibility
+
+The site uses the visible identity “Aman Singh Suneo,” truthful India information, connected social-profile links, unique page titles and descriptions, canonical URLs and structured data. `robots.txt` advertises `https://aman-singh-resume.vercel.app/sitemap.xml`. Search engines decide whether and where to index the site; no first-place or instant-ranking claim is made.
+
+Owner action: verify the URL-prefix property `https://aman-singh-resume.vercel.app/` in Google Search Console, provide its HTML verification token/file for deployment if needed, then submit `sitemap.xml` and request indexing of the homepage. Do not paste passwords or account tokens into source control. Add this website to your own social-profile bios when ready. No Search Console verification or indexing request has been submitted by this implementation.
+
+Course disclaimer wording is a disclosure, not a substitute for applicable financial-services or consumer-protection obligations. Obtain appropriate professional advice before offering regulated services.
 
 The published website contains personal professional information. Review contact details and résumé files before repurposing or redistributing it.

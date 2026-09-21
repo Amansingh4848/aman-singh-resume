@@ -1,0 +1,50 @@
+.world-portals { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; padding-block:1rem 4rem; }
+.world-portal { position:relative; overflow:hidden; display:grid; grid-template-columns:1fr auto; gap:.4rem; border:1px solid var(--line); padding:1.4rem; border-radius:1rem; background:var(--surface); transition:transform .35s,border-color .35s; }
+.world-portal:hover { transform:translateY(-4px); border-color:var(--accent); }
+.world-portal small { grid-column:1/-1; color:var(--muted); font-size:.58rem; letter-spacing:.12em; }
+.world-portal strong { font-size:1.1rem; letter-spacing:-.03em; }
+.world-portal span { color:var(--accent); }
+.world-portal::after { content:''; position:absolute; inset:auto 0 0; height:1px; background:linear-gradient(90deg,transparent,var(--accent),transparent); }
+.live-video-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.4rem; }
+.live-video-card { border:1px solid var(--line); border-radius:1rem; overflow:hidden; background:var(--surface); display:flex; flex-direction:column; }
+.live-video-image { display:block; position:relative; aspect-ratio:16/9; overflow:hidden; background:#090d13; }
+.live-video-image img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s; }
+.live-video-card:hover img { transform:scale(1.035); }
+.video-play { width:2.5rem; height:2.5rem; background:#0d1020dd; border:1px solid #ffffff70; border-radius:50%; display:grid; place-items:center; color:#fff; font-size:.7rem; position:absolute; right:.8rem; bottom:.8rem; }
+.live-video-caption { display:grid; gap:.6rem; padding:1.3rem; }
+.live-video-caption small { color:var(--accent); font-size:.52rem; letter-spacing:.1em; }
+.live-video-caption strong { font-size:.88rem; line-height:1.5; font-weight:600; overflow-wrap:anywhere; }
+.live-video-caption time,.live-video-caption > span { color:var(--muted); font-size:.62rem; }
+.feed-toolbar { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
+.video-search { display:flex; align-items:center; gap:.7rem; border:1px solid var(--line); border-radius:.7rem; background:var(--surface); padding:.7rem 1rem; max-width:30rem; flex:1; }
+.video-search > span { color:var(--accent); font-size:1.3rem; line-height:1; }
+.video-search input { min-width:0; width:100%; border:0; color:var(--ink); background:none; font:inherit; font-size:.8rem; padding:.3rem; }
+.video-search input::placeholder { color:var(--muted); opacity:.85; }
+[data-result-count] { color:var(--muted); font-size:.7rem; white-space:nowrap; }
+.feed-status { color:var(--muted); font-size:.67rem; margin:1rem 0 1.4rem; min-height:1.5em; }
+.feed-empty { grid-column:1/-1; padding:2rem; color:var(--muted); border:1px solid var(--line); border-radius:.8rem; font-size:.85rem; }
+.player-shell { position:relative; width:100%; aspect-ratio:16/9; min-height:220px; overflow:hidden; border:1px solid var(--line); border-radius:1.2rem; background:var(--surface); }
+.player-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:1.5rem; text-align:center; gap:.7rem; background:radial-gradient(ellipse at 50% 30%,color-mix(in srgb,var(--accent) 8%,var(--surface)),var(--surface)); }
+.player-loading > strong { font-size:1.2rem; letter-spacing:-.025em; }
+.player-loading > p { max-width:30rem; font-size:.75rem; color:var(--muted); margin:0; }
+.player-loading .action { margin-top:.7rem; }
+.playlist-facade { position:relative; border:0; padding:0; width:100%; height:100%; display:block; cursor:pointer; color:#fff; background:#0b1016; }
+.playlist-facade > img { width:100%; height:100%; object-fit:cover; opacity:.3; filter:saturate(.55); transition:transform .7s,opacity .7s; }
+.playlist-facade:hover > img { opacity:.45; transform:scale(1.025); }
+.playlist-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; padding:1rem; background:linear-gradient(0deg,#090c1099,transparent); text-align:center; }
+.large-play { width:4rem; height:4rem; border-radius:50%; border:1px solid #ffffff70; display:grid; place-items:center; background:var(--accent); color:var(--bg); font-size:1.1rem; }
+.playlist-overlay strong { font-size:1.4rem; letter-spacing:-.025em; }
+.playlist-overlay small { font-size:.7rem; color:#e7e5ed; }
+.channel-player { display:block; width:100%; height:100%; border:0; min-height:220px; }
+.site-header nav.world-nav { gap:1.35rem; }
+.site-header nav.world-nav a { font-size:.74rem; white-space:nowrap; }
+.social-grid.github-inclusive { grid-template-columns:repeat(5,minmax(0,1fr)); }
+.github-icon { color:var(--ink); background:color-mix(in srgb,var(--ink) 8%,transparent); font-size:.9rem; font-weight:600; }
+.homepage-live-link { display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.6rem; }
+.homepage-live-link a { font-size:.72rem; color:var(--accent); border-bottom:1px solid var(--line); padding-bottom:.25rem; }
+.gallery-card[data-home-video] .media-caption strong { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.8em; }
+@media(max-width:1100px) { .social-grid.github-inclusive { grid-template-columns:repeat(2,minmax(0,1fr)); } .social-grid.github-inclusive .social-card:last-child { grid-column:1/-1; } }
+@media(max-width:900px) { .live-video-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { .world-portals,.live-video-grid,.social-grid.github-inclusive { grid-template-columns:1fr; } .social-grid.github-inclusive .social-card:last-child { grid-column:auto; } .world-portals { padding-bottom:2rem; } .feed-toolbar { gap:.6rem; } .video-search { padding:.65rem .7rem; } .playlist-overlay strong { font-size:1.1rem; } .playlist-overlay { gap:.7rem; } .large-play { width:3rem; height:3rem; } .player-shell { border-radius:.8rem; } .live-video-caption strong { font-size:.95rem; } }
+[data-motion="off"] .live-video-card:hover img,[data-motion="off"] .world-portal:hover,[data-motion="off"] .playlist-facade:hover > img { transform:none; }
+@media(prefers-reduced-motion:reduce) { .live-video-card:hover img,.world-portal:hover,.playlist-facade:hover > img { transform:none; } }

@@ -150,7 +150,7 @@
   document.querySelectorAll('main > section,footer').forEach(section => { section.dataset.motionRegion = 'true'; });
 
   const header = document.querySelector('.site-header');
-  const links = [...document.querySelectorAll('.site-header nav a')];
+  const links = [...document.querySelectorAll('.site-header nav a[href^="#"]')];
   const sections = links.map(link => document.querySelector(link.getAttribute('href')));
   const chapterLinks = [...document.querySelectorAll('.motion-chapters a')];
   const chapters = chapterLinks.map(link => document.querySelector(link.getAttribute('href')));
@@ -279,8 +279,8 @@
       const tint = isLight ? '108,78,160' : '174,144,241';
       const cool = isLight ? '61,105,164' : '131,185,236';
       const ultra = quality() === 'ultra';
-      const lines = ultra ? 15 : 7;
-      const steps = ultra ? 100 : 52;
+      const lines = ultra ? 10 : 5;
+      const steps = ultra ? 72 : 40;
       const alpha = isLight ? .14 : .28;
       const scale = Math.max(.8,Math.min(1.8,width / 1500));
       // Twisted ribbons: spatially coherent strands, not a video or a bitmap.
