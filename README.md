@@ -6,7 +6,8 @@ An animated, responsive portfolio for Aman Singh Suneo, with dedicated Trading W
 
 ## Features
 
-- Midnight, silver, violet and icy-blue visual theme, plus a light theme.
+- One midnight-blue, violet and icy-blue visual theme across all four pages, plus a shared light-theme preference.
+- Custom World Atlas selector: an animated orbital map, four numbered destinations, keyboard-accessible links and native dialog focus handling. A persistent route strip provides direct links on every page.
 - 4K-ready generative light ribbons and a projected 3D energy core, with animation across every main section.
 - Native-resolution canvas artwork up to 3840 × 2160 pixels, scalable SVG detail and large-display typography.
 - Ultra / Balanced visual detail switch; phones default to the lighter mode.
@@ -18,7 +19,10 @@ An animated, responsive portfolio for Aman Singh Suneo, with dedicated Trading W
 - No résumé download buttons or download section. Previously created résumé files are retained unchanged.
 - Responsive layouts for desktop, tablet and mobile.
 - Four top-level pages: `/`, `/trading`, `/youtube`, and `/instagram`, linked from every page.
-- GitHub profile: https://github.com/Amansingh4848.
+- GitHub profile beside LinkedIn on the front page only: https://github.com/Amansingh4848. No separate GitHub destination or GitHub links on creator pages.
+- Interactive trading learning lab: up/down candlestick anatomy, range/breakout, double-top and ascending-triangle diagrams, and an illustrative Nifty option chain with selectable strikes and field explanations.
+- Option-chain examples are synthetic and fixed, not real exchange prices or model-generated valuations. Pure calculations demonstrate intrinsic value and moneyness without trading recommendations. Greeks, execution risk and failure scenarios are explained alongside the graphics.
+- Basic covers market and risk foundations; Normal includes Basic plus price-action practice and option-chain introductions; Advanced includes Normal plus option sensitivities, hypothetical spreads and research pitfalls. The curriculum is an outline to confirm before enrollment, not a promise of returns, certification, class duration or support entitlements.
 - Live YouTube RSS feeds for the latest 15 uploads on each channel, plus on-demand uploads-playlist players and full-channel links.
 - Trading education enquiry cards at ₹10,000, ₹20,000 and ₹30,000. WhatsApp links open a pre-filled draft to +91 90981 03580; no message or payment is sent automatically.
 - Clearly visible educational-risk, non-refundable-fee and consumer-rights notices. Confirm syllabus, duration, schedule, taxes and terms with the student before accepting payment.
@@ -41,6 +45,8 @@ Then open [localhost:8000](http://localhost:8000). With a basic static server, o
 - `index.html`: page content and profile links.
 - `trading.html`, `youtube.html`, `instagram.html`: dedicated creator pages.
 - `worlds.css`, `worlds.js`, `channels.css`: lightweight shared page design and motion.
+- `identity.css`, `identity.js`: unified theme, shared controls and custom World Atlas navigation.
+- `trading-lab.css`, `trading-lab.js`: original financial SVG illustrations, lesson interactions and independently testable teaching calculations.
 - `feeds.js`, `api/youtube.js`: cached live YouTube cards and click-to-load platform embeds.
 - `styles.css`, `motion.css`, `cinematic.css`, `ambient.css`, `uhd.css`, `social.css`: layout, themes and animation styles.
 - `script.js`, `motion.js`, `motion-quality.js`: navigation, controls, pixel budgets and interactive motion.

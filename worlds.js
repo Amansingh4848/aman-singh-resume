@@ -21,9 +21,9 @@
   document.querySelectorAll('.reveal').forEach((element,index)=>{element.style.setProperty('--delay',(index%3*65)+'ms');revealObserver.observe(element);});
   const canvas=document.querySelector('.world-canvas'), ctx=canvas.getContext('2d');
   let width=0,height=0,frame=0,previous=0,elapsed=0,phase=0;
-  const rgb=document.body.classList.contains('trading-world')?'128,225,193':document.body.classList.contains('youtube-world')?'191,151,237':'240,168,191';
   function draw(){
     if(!ctx||!width||!height)return;
+    const rgb=document.body.classList.contains('light')?'95,86,152':'171,177,244';
     ctx.clearRect(0,0,width,height);
     const lines=quality()==='ultra'?9:4,steps=quality()==='ultra'?64:32;
     for(let band=0;band<2;band++) for(let line=0;line<lines;line++) {
@@ -47,6 +47,7 @@
   motion.addEventListener('click',()=>{paused=!paused;try{localStorage.setItem('aman-motion',paused?'paused':'playing');}catch(_){}sync();});
   detail.addEventListener('click',()=>{chosen=quality()==='ultra'?'balanced':'ultra';try{localStorage.setItem('aman-quality',chosen);}catch(_){}resize();sync();});
   reduce.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
+  document.addEventListener('aman-theme-change',draw);
   new ResizeObserver(resize).observe(canvas);
   const progress=document.querySelector('.world-progress');let scheduled=false;
   function updateProgress(){const total=document.documentElement.scrollHeight-innerHeight;progress.style.scale=(total>0?Math.max(0,Math.min(1,scrollY/total)):0)+' 1';scheduled=false;}
