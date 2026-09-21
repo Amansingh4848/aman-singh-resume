@@ -47,7 +47,18 @@ Then open [localhost:8000](http://localhost:8000). With a basic static server, o
 - `trading/source/build.cjs`: deterministic static-page builder. Run `node trading/source/build.cjs` after content changes. It also produces the app's public educational payload and sitemap.
 - `trading/learning.css`, `learning.js`, `math.js`: shared study UI, local progress/journal and pure, testable calculator logic.
 - `trading/app.html`, `app.js`, `manifest.webmanifest`, `sw.js`: installable Trade Zuko web app. Protected content is never cached; internet is required.
+- `trading/install.html`, `install.css`, `install.js`, `source/install.cjs`: dedicated Android/iPhone installation page, prominent pre-login install buttons, accessible platform guides and progressive native-install prompts. The source template is rebuilt by `build.cjs`.
 - `api/trade-access.js`, `trading/source/auth.cjs`: server-side password verification and owner controls. Password hashes, a signing key and version counters live in a **private** Vercel Blob store, not in source control. Reads bypass storage caching, writes use ETag-based concurrency protection.
+
+## Install Trade Zuko on a phone
+
+Open `/trading/install` on the deployed website. On Android, use Chrome and select **Install on Android**; when the browser does not offer a prompt, follow the Chrome menu instructions. On iPhone or iPad, use Safari → Share → **Add to Home Screen**, turn on **Open as Web App** if shown, then **Add**. Both buttons are also visible before login at `/trading/app`, and the trading hub links to both platform guides.
+
+This is a browser-installed web app, not an APK/IPA or a published store app. Installation is free and does not enroll a learner in a paid class. App login still needs the owner-supplied learner password. The opening screen is available offline after successful caching; protected lessons and videos require the internet. Local progress/journals do not automatically sync across browser and installed-app storage or devices. Export important notes before removing the app.
+
+Browser installation support and menu wording vary. The native install prompt is used only after a user click and only when offered by the browser. Otherwise, manual instructions remain available. An explicit update button activates a waiting service-worker update, avoiding unexpected reloads while editing notes. The installation page can copy its hosted link; local-only addresses are not offered for phone sharing. Preview deployments show a notice because Vercel sign-in may still be required on the phone. A public learner launch needs an approved commercial host and a public production deployment.
+
+Run `npm test` for the study/auth checks plus installation state and offline-shell checks. Actual installation on physical Android and iOS devices must still be verified before a learner rollout.
 
 ## Trade Zuko access management
 

@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "description": "Personal portfolio and Trade Zuko learning website",
-  "scripts": { "build:trading": "node trading/source/build.cjs", "test": "node tests/trade-zuko.cjs" },
+  "scripts": { "build:trading": "node trading/source/build.cjs", "test": "node tests/trade-zuko.cjs && node tests/install.cjs" },
   "dependencies": { "@vercel/blob": "2.8.0" }
 }
