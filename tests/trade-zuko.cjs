@@ -25,10 +25,18 @@ assert.equal((await request({method:'POST',action:'login',body:{role:'owner',pas
 const learner=await request({method:'POST',action:'login',body:{role:'learner',password:'Learner-example-secret-123'}});assert.equal(learner.status,200);assert.match(learner.headers['Set-Cookie'],/HttpOnly; SameSite=Strict; Secure/);
 assert.equal((await request({method:'POST',action:'change-owner',cookie:learner.cookie,csrf:learner.body.csrf,body:{newPassword:'Changed-owner-secret-123',ownerPassword:'Learner-example-secret-123'}})).status,403);
 const owner=await request({method:'POST',action:'login',body:{role:'owner',password:'Owner-example-secret-123'}});assert.equal(owner.status,200);
+assert.equal((await request({method:'POST',action:'offline-pack',body:{password:'Learner-example-secret-123'}})).status,403);
+assert.equal((await request({method:'POST',action:'offline-pack',cookie:learner.cookie,csrf:'bad',body:{password:'Learner-example-secret-123'}})).status,403);
+assert.equal((await request({method:'POST',action:'offline-pack',cookie:learner.cookie,csrf:learner.body.csrf,body:{password:'Wrong-learner-secret-123'}})).status,401);
+const pack=await request({method:'POST',action:'offline-pack',cookie:learner.cookie,csrf:learner.body.csrf,body:{password:'Learner-example-secret-123'}});assert.equal(pack.status,200);assert.equal(Object.keys(pack.body.pages).length,23);assert.equal(pack.body.sourceRole,'learner');assert(!JSON.stringify(pack.body).includes(state.signingKey));assert(!JSON.stringify(pack.body).includes(state.owner.hash));assert.match(pack.headers['Cache-Control'],/no-store/);
+assert.equal((await request({method:'POST',action:'offline-status',body:{permit:pack.body.permit}})).body.valid,true);
+assert.equal((await request({method:'POST',action:'offline-status',body:{permit:pack.body.permit+'tampered'}})).body.valid,false);
+assert.equal((await request({action:'content',page:'library',cookie:'__Host-zuko='+pack.body.permit})).status,401);
 assert.equal((await request({method:'POST',action:'change-learner',cookie:owner.cookie,csrf:'bad',body:{newPassword:'Changed-learner-secret-123',ownerPassword:'Owner-example-secret-123'}})).status,403);
 assert.equal((await request({action:'content',page:'library',cookie:learner.cookie})).status,200);
 assert.equal((await request({method:'POST',action:'change-learner',cookie:owner.cookie,csrf:owner.body.csrf,body:{newPassword:'Changed-learner-secret-123',ownerPassword:'Owner-example-secret-123'}})).status,200);
 assert.equal((await request({cookie:learner.cookie})).status,401);
+assert.equal((await request({method:'POST',action:'offline-status',body:{permit:pack.body.permit}})).body.valid,false);
 assert.equal((await request({method:'POST',action:'login',body:{role:'learner',password:'Learner-example-secret-123'}})).status,401);
 assert.equal((await request({method:'POST',action:'login',body:{role:'learner',password:'Changed-learner-secret-123'}})).status,200);
 assert.equal((await request({method:'POST',action:'change-owner',cookie:owner.cookie,csrf:owner.body.csrf,body:{newPassword:'Changed-owner-secret-123',ownerPassword:'Owner-example-secret-123'}})).status,200);

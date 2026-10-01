@@ -1,10 +1,16 @@
 'use strict';
 // Cache only the login shell and public presentation assets, never protected responses.
-const CACHE='trade-zuko-shell-2026-09-21-v3';
-const ASSETS=['/trading/app','/trading/install','/trading/install.css?v=1','/trading/install.js?v=1','/trading/icon.svg','/trading/icon-180.png','/trading/icon-192.png','/trading/icon-512.png','/trading/manifest.webmanifest','/worlds.css?v=2','/channels.css?v=1','/identity.css?v=1','/trading-lab.css?v=1','/trading/learning.css?v=1','/motion-quality.js?v=1','/worlds.js?v=2','/identity.js?v=1','/trading/math.js?v=1','/trading/learning.js?v=1','/trading/app.js?v=2','/trading-lab.js?v=2','/assets/aman-singh.jpg'];
+const CACHE='trade-zuko-shell-2026-10-01-v4';
+const ASSETS=['/trading/app','/trading/install','/trading/install.css?v=1','/trading/install.js?v=2','/trading/icon.svg','/trading/icon-180.png','/trading/icon-192.png','/trading/icon-512.png','/trading/manifest.webmanifest','/worlds.css?v=2','/channels.css?v=1','/identity.css?v=1','/trading-lab.css?v=1','/trading/learning.css?v=1','/motion-quality.js?v=1','/worlds.js?v=2','/identity.js?v=1','/trading/math.js?v=1','/trading/learning.js?v=1','/trading/app.js?v=3','/trading-lab.js?v=2','/assets/aman-singh.jpg','/trading/offline.js?v=1','/trading/offline.css?v=1','/assets/instagram-coast.webp','/assets/instagram-beach.webp','/assets/instagram-adventure.webp'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS))));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('trade-zuko-shell-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('message',event=>{if(event.data?.type==='ACTIVATE_UPDATE')self.skipWaiting();});
+self.addEventListener('message',event=>{
+  if(event.data?.type==='ACTIVATE_UPDATE')self.skipWaiting();
+  if(event.data?.type==='VERIFY_OFFLINE_SHELL'&&event.ports?.[0])event.waitUntil(caches.open(CACHE).then(async cache=>{
+    const complete=(await Promise.all(ASSETS.map(url=>cache.match(url)))).every(Boolean);
+    event.ports[0].postMessage({ready:complete,version:CACHE});
+  }).catch(()=>event.ports[0].postMessage({ready:false})));
+});
 self.addEventListener('fetch',event=>{
   const url=new URL(event.request.url);
   if(event.request.method!=='GET'||url.origin!==self.location.origin||url.pathname.startsWith('/api/'))return;

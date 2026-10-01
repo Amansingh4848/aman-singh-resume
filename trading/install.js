@@ -79,7 +79,7 @@
         catch{input.focus();input.select();copyStatus.textContent='Select and copy the link above manually; automatic copying is unavailable.';}
       });
     }
-    if(win.location.hostname.endsWith('.vercel.app')&&win.location.hostname!=='aman-singh-resume.vercel.app')all('[data-install-release]').forEach(n=>{n.hidden=false;n.textContent='Preview build: Vercel sign-in may be required on another device. Public learner launch is not yet available at this address.';});
+    if(win.location.hostname.endsWith('.vercel.app')&&win.location.hostname!=='aman-singh-resume.vercel.app')all('[data-install-release]').forEach(n=>{n.hidden=false;n.textContent='This is a preview address and may require Vercel sign-in. Use Aman’s published app link for public installation; downloads are tied to the address where you save them.';});
     refresh();
     if('serviceWorker'in nav){
       nav.serviceWorker.register('/trading/sw.js',{scope:'/trading/'}).then(reg=>{

@@ -16,4 +16,13 @@ function consumeAttempt(state,ip,now=Date.now()){
   if(row.count>=8||global.count>=80){const error=Error('Too many attempts. Wait 15 minutes before trying again.');error.status=429;throw error;}
   row.count++;global.count++;attempts[key]=row;state.attempts=attempts;state.globalAttempt=global;return state;
 }
-module.exports={random,equal,validPassword,hashPassword,verifyPassword,signSession,readSession,consumeAttempt};
+function signOfflinePermit(state,role,now=Date.now()){
+  const body=Buffer.from(JSON.stringify({kind:'offline-study-v1',role,version:state[role+'Version'],issued:now,nonce:random()})).toString('base64url');
+  return body+'.'+crypto.createHmac('sha256',state.signingKey).update(body).digest('base64url');
+}
+function readOfflinePermit(token,state){
+  try{if(typeof token!=='string'||token.length>2048)return null;const parts=token.split('.');if(parts.length!==2)return null;const [body,sig]=parts;if(!equal(sig,crypto.createHmac('sha256',state.signingKey).update(body).digest('base64url')))return null;
+    const p=JSON.parse(Buffer.from(body,'base64url').toString());return p.kind==='offline-study-v1'&&['owner','learner'].includes(p.role)&&p.version===state[p.role+'Version']?p:null;
+  }catch{return null;}
+}
+module.exports={random,equal,validPassword,hashPassword,verifyPassword,signSession,readSession,consumeAttempt,signOfflinePermit,readOfflinePermit};

@@ -2,7 +2,7 @@
   "id": "/trading/app",
   "name": "Trade Zuko",
   "short_name": "Trade Zuko",
-  "description": "Aman Singh’s password-access trading learning desk.",
+  "description": "Aman Singh’s password-access trading learning desk. Download lessons once and study offline.",
   "start_url": "/trading/app?source=pwa",
   "scope": "/trading/",
   "display": "standalone",

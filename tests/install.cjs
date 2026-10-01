@@ -48,7 +48,7 @@ async function main(){
       assert.match(html,/href="\/trading\/install\?device=android" data-install-device="android"/);
       assert.match(html,/href="\/trading\/install\?device=ios" data-install-device="ios"/);
       assert.match(html,/aria-labelledby="z-install-title"/);
-      assert.equal((html.match(/src="\/trading\/install.js\?v=1"/g)||[]).length,1);
+      assert.equal((html.match(/src="\/trading\/install.js\?v=2"/g)||[]).length,1);
     }
     const app=fs.readFileSync(path.join(__dirname,'../trading/app.html'),'utf8');
     assert(app.indexOf('data-install-device')<app.indexOf('data-login-form'));

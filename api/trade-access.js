@@ -32,11 +32,20 @@ async function handler(req,res){
       if(!Object.hasOwn(pages,page))return send(res,404,{error:'Lesson not found.'});
       return send(res,200,{page,title:pages[page].title,html:pages[page].html});
     }
-    if(!['login','change-learner','change-owner','recover-owner'].includes(action))return send(res,400,{error:'Unknown request.'});
+    // A download permit can only check whether a saved copy's access version is current.
+    // It is never accepted as a login session or as authority to fetch fresh content.
+    if(action==='offline-status')return send(res,200,{valid:!!auth.readOfflinePermit(req.body.permit,state)});
+    if(!['login','change-learner','change-owner','recover-owner','offline-pack'].includes(action))return send(res,400,{error:'Unknown request.'});
+    if(action==='offline-pack'&&(!session||!auth.equal(req.headers['x-zuko-csrf']||'',session.csrf)))return send(res,403,{error:'Log in again before downloading lessons.'});
     if(action.startsWith('change-')&&(!session||session.role!=='owner'||!auth.equal(req.headers['x-zuko-csrf']||'',session.csrf)))return send(res,403,{error:'Owner access is required.'});
     // The counter is durable across server instances. Never trust a caller-supplied IP header in production.
     const ip=process.env.VERCEL?String(req.headers['x-vercel-forwarded-for']||'unknown').split(',')[0].trim():String(req.socket?.remoteAddress||'local');
     state=(await update(s=>auth.consumeAttempt(s,ip))).state;
+    if(action==='offline-pack'){
+      const current=auth.readSession(cookies(req)[cookieName()],state);
+      if(!current||!await auth.verifyPassword(req.body.password,state[current.role]))return send(res,401,{error:'Confirm your current app password before downloading.'});
+      return send(res,200,{schema:1,sourceRole:current.role,savedAt:new Date().toISOString(),permit:auth.signOfflinePermit(state,current.role),pages:require('../trading/source/app-pages.json')});
+    }
     if(action==='login'){
       const role=req.body.role;if(!['owner','learner'].includes(role))return send(res,400,{error:'Choose learner or owner access.'});
       if(!await auth.verifyPassword(req.body.password,state[role]))return send(res,401,{error:'The password is incorrect. Please try again.'});
