@@ -4,6 +4,7 @@ const $=s=>document.querySelector(s),all=s=>[...document.querySelectorAll(s)],of
 let session=null,currentPage='library',navigation=0,checking=false,offlineMode=false,offlineBundle=null,manualLock=false,offlineBusy=false,accessGeneration=0;
 const status=$('[data-app-status]'),content=$('[data-app-content]'),authPanel=$('[data-auth-panel]'),workspace=$('[data-app-workspace]'),ownerPanel=$('[data-owner-panel]');
 const appMotion=$('[data-app-motion]');
+let googleLogin;
 function motionLabel(){const off=document.documentElement.dataset.motion==='off';appMotion.textContent=off?'Play motion':'Pause motion';appMotion.setAttribute('aria-label',off?'Play app animations':'Pause app animations');}
 appMotion.addEventListener('click',()=>{$('.world-motion').click();motionLabel();});
 $('[data-app-theme]').addEventListener('click',()=>$('.theme-toggle').click());motionLabel();
@@ -22,9 +23,14 @@ function lock(message='Please log in to Trade Zuko.'){
 }
 function authorize(s){
   session=s;offlineMode=false;manualLock=false;authPanel.hidden=true;workspace.hidden=false;ownerPanel.hidden=s.role!=='owner';
-  $('[data-app-logout]').hidden=false;status.textContent=s.role==='owner'?'Owner access — you control the learner password.':'Learner access — welcome to Trade Zuko.';offlineControls();
+  $('[data-app-logout]').hidden=false;status.textContent=s.role==='owner'?'Owner access — you control the learner password.':s.provider==='google'?'Signed in with Google · learner access only.':'Learner access — welcome to Trade Zuko.';offlineControls();
 }
 function offlineControls(){
+  const viaGoogle=session?.provider==='google',form=$('[data-offline-save]'),password=form.elements.password;
+  $('[data-download-password-label]').textContent=viaGoogle?'Choose a password for this device (not your Google password)':'Confirm your current app password';
+  password.autocomplete=viaGoogle?'new-password':'current-password';
+  $('[data-download-confirm]').hidden=!viaGoogle;form.elements.confirmPassword.required=viaGoogle;
+  $('[data-download-google-note]').hidden=!viaGoogle;
   $('[data-offline-download]').hidden=!session||offlineMode;
   $('[data-offline-lock]').hidden=!offlineMode;
   $('[data-offline-mode]').hidden=!offlineMode;
@@ -45,7 +51,7 @@ async function validateSaved(bundle){
     const result=await api('offline-status',{permit:bundle.permit});
     if(!result.valid){
       await offline.remove(indexedDB);offlineBundle=null;await refreshDownloadInfo();
-      const e=Error('Access has changed. Log in online with the current password and download the lessons again.');e.revoked=true;throw e;
+      const e=Error('Access has changed. Sign in online and download the lessons again.');e.revoked=true;throw e;
     }
   }catch(e){if(e.revoked)throw e;if(e.status===403)throw Error('This address could not verify saved access. Use Aman’s current app link.');}
   return true; // A network/server outage must not defeat the requested offline access.
@@ -82,7 +88,7 @@ async function showPage(page,scroll=false){
     if(!offlineMode)loadVideos();
   }catch(e){
     if(id!==navigation)return;
-    if(e.status===401||e.status===403){lock('Access changed or expired. Log in again with the current password.');}
+    if(e.status===401||e.status===403){lock('Access changed or expired. Sign in again.');}
     else if(e.status!==404&&offlineBundle&&!offlineMode){await enterOffline(offlineBundle,scroll);}
     else{content.replaceChildren();const note=document.createElement('p');note.className='shell z-feedback';note.textContent=(e.status===404?'That page is not in this library.':'A connection is needed for fresh lessons. Unlock your saved download to keep learning offline.')+' Choose a page above to try again.';content.append(note);}
   }finally{if(id===navigation)content.removeAttribute('aria-busy');}
@@ -125,7 +131,7 @@ $('[data-recovery-form]').addEventListener('submit',e=>{
 });
 $('[data-app-logout]').addEventListener('click',async()=>{
   manualLock=true;
-  try{await api('logout',{});lock('You are logged out. Your encrypted download stays saved; its password is required to reopen it.');}
+  try{await api('logout',{});lock('You are logged out. Your encrypted download stays saved; its password is required to reopen it.');googleLogin?.logout();}
   catch{lock('This screen is locked. Reconnect and log out again to clear the server session.');}
 });
 $('[data-offline-save]').addEventListener('submit',e=>{
@@ -133,9 +139,10 @@ $('[data-offline-save]').addEventListener('submit',e=>{
   formRequest(e.currentTarget,async(d,feedback)=>{
     if(!session||offlineMode)throw Error('Log in online before downloading.');
     if(!d.get('consent'))throw Error('Confirm that you want to save an encrypted copy on this device.');
+    if(session.provider==='google'&&d.get('password')!==d.get('confirmPassword'))throw Error('The two device passwords do not match.');
     const generation=accessGeneration;
     feedback.textContent='Preparing the offline app files…';await offline.prepareShell(window);
-    feedback.textContent='Downloading all learning sections…';const bundle=await api('offline-pack',{password:d.get('password')});
+    feedback.textContent='Downloading all learning sections…';const bundle=await api('offline-pack',session.provider==='google'?{}:{password:d.get('password')});
     feedback.textContent='Encrypting your download on this device…';const record=await offline.seal(bundle,d.get('password'),crypto);
     if(generation!==accessGeneration||!session)throw Error('Access changed during download. Log in and retry.');
     await offline.save(indexedDB,record);if(generation!==accessGeneration)return;offlineBundle=bundle;
@@ -165,7 +172,7 @@ async function check(initial=false){
     if(generation!==accessGeneration||manualLock)return;
     if(!e.status&&offlineBundle){try{await enterOffline(offlineBundle);}catch(error){lock(error.message);}}
     else if(e.status>=500&&offlineBundle){try{await enterOffline(offlineBundle);}catch(error){lock(error.message);}}
-    else lock(e.status===401?'Enter your learner password, or unlock an existing offline download below.':'Internet is unavailable. Use “Open downloaded lessons offline” if you saved a pack on this device.');
+    else lock(e.status===401?'Sign in with an available option below, or unlock an existing offline download.':'Internet is unavailable. Use “Open downloaded lessons offline” if you saved a pack on this device.');
   }finally{checking=false;}
 }
 document.addEventListener('visibilitychange',()=>{content.hidden=true;if(!document.hidden)check().finally(()=>content.hidden=false);});
@@ -191,5 +198,6 @@ async function loadVideos(){
     const count=area.querySelector('[data-result-count]');if(count)count.textContent=grid.children.length+' videos';
   }catch{if(notice)notice.textContent='Video updates need internet. Your downloaded study lessons remain available.';}
 }
+googleLogin=window.TradeGoogle?.init({request:api,onLogin:async s=>{accessGeneration++;offlineBundle=null;authorize(s);await showPage(requestedPage(),true);}});
 refreshDownloadInfo();check(true);
 })();
