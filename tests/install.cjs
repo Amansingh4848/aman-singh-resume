@@ -1,26 +1,28 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
-const {device,installationLink,controller,init}=require('../trading/install.js');
+const {device,installationLink,appleLink,embeddedIOS,controller,init}=require('../trading/install.js');
 const {enhance}=require('../trading/source/install.cjs');
 function element(extra={}){
   return Object.assign({hidden:false,dataset:{},textContent:'',attributes:{},handlers:{},
     addEventListener(name,fn){(this.handlers[name]??=[]).push(fn);},
     emit(name,event={}){for(const fn of this.handlers[name]||[])fn(event);},
     setAttribute(name,value){this.attributes[name]=value;},
-    querySelector(){return null;},querySelectorAll(){return [];},focus(){this.focused=true;}
+    querySelector(){return null;},querySelectorAll(){return [];},focus(){this.focused=true;},scrollIntoView(){this.scrolled=true;},select(){this.selected=true;}
   },extra);
 }
-function ui({type='android',pathname='/trading/app',search='',standalone=false,sw,dialog=true}={}){
+function ui({type='android',pathname='/trading/app',search='',standalone=false,navStandalone=false,sw,dialog=true,access='none',safari=false,ua,clipboard}={}){
   const label=element(),trigger=element({href:'/trading/install?install=1',querySelector:()=>label}),native=element(),note=element(),close=element(),status=element(),banner=element(),update=element({hidden:true});
   const guides=['android','ios','desktop'].map(guide=>element({dataset:{guide},hidden:true}));
   const deviceLinks=['android','ios'].map(installDevice=>element({dataset:{installDevice}}));
-  const modal=element({open:false,showModal(){this.open=true;},close(){this.open=false;this.emit('close');},querySelector(s){return s==='[data-install-close]'?close:s==='[data-install-dialog-note]'?note:null;},querySelectorAll:()=>guides});
-  const map={'[data-install-status]':[status],'[data-install-trigger]':[trigger],'[data-install-native]':[native],'[data-install-trigger],[data-install-native]':[trigger,native],'[data-install-device]':deviceLinks,'.z-install-banner':[banner]};
-  const media=element({matches:standalone}),win=element({navigator:{userAgent:type==='ios'?'iPhone Safari':type==='android'?'Android Chrome':'Windows Chrome'},location:{hostname:'example.com',origin:'https://example.com',pathname,search,href:'https://example.com'+pathname+search},matchMedia:()=>media});
-  win.document={activeElement:trigger,querySelector:s=>s==='#z-install-dialog'&&dialog?modal:s==='[data-app-update]'?update:null,querySelectorAll:s=>map[s]||[]};
+  const authPanel=element({hidden:access==='workspace'}),workspace=element({hidden:access!=='workspace'}),useApp=element();
+  const safariInput=element(),safariStatus=element(),safariHelp=element({querySelector:s=>s==='[data-safari-link]'?safariInput:s==='[data-safari-status]'?safariStatus:null}),safariCopy=element({closest:()=>safariHelp});
+  const modal=element({open:false,showModal(){this.open=true;},close(){this.open=false;this.emit('close');},querySelector(s){return s==='[data-install-close]'?close:s==='[data-install-dialog-note]'?note:s==='[data-safari-help]'?safariHelp:null;},querySelectorAll:()=>guides});
+  const map={'[data-install-status]':[status],'[data-install-trigger]':[trigger],'[data-install-native]':[native],'[data-install-trigger],[data-install-native]':[trigger,native],'[data-install-device]':deviceLinks,'.z-install-banner':[banner],'[data-use-app]':[useApp],'[data-safari-link]':safari?[safariInput]:[],'[data-copy-safari]':safari?[safariCopy]:[]};
+  const media=element({matches:standalone}),win=element({navigator:{userAgent:ua||(type==='ios'?'iPhone Safari':type==='android'?'Android Chrome':'Windows Chrome'),standalone:navStandalone,clipboard},location:{hostname:'example.com',origin:'https://example.com',pathname,search,href:'https://example.com'+pathname+search},matchMedia:()=>media});
+  win.document={activeElement:trigger,querySelector:s=>s==='#z-install-dialog'&&dialog?modal:s==='[data-app-update]'?update:access!=='none'&&s==='[data-auth-panel]'?authPanel:access!=='none'&&s==='[data-app-workspace]'?workspace:null,querySelectorAll:s=>map[s]||[]};
   if(sw)win.navigator.serviceWorker=sw;
   const click=(node,extra={})=>{const event={prevented:false,preventDefault(){this.prevented=true;},...extra};node.emit('click',event);return event;};
-  init(win);return {win,trigger,native,label,note,close,status,banner,update,guides,deviceLinks,modal,media,click};
+  init(win);return {win,trigger,native,label,note,close,status,banner,update,guides,deviceLinks,modal,media,click,authPanel,workspace,useApp,safariInput,safariStatus,safariCopy,safariHelp};
 }
 const flush=()=>new Promise(resolve=>setImmediate(resolve));
 let passed=0;
@@ -105,12 +107,42 @@ async function main(){
     const first=ui({sw:element({controller:null,register:async()=>registration})});await flush();assert(first.update.hidden);
     const existing=ui({sw:element({controller:{},register:async()=>registration})});await flush();assert.equal(existing.update.hidden,false);
   });
+  await test('Apple install uses the actual app entry from every other trading page',()=>{
+    for(const pathname of ['/','/trading','/trading/install','/trading/learn/gift-nifty']){
+      const u=ui({type:'ios',pathname});u.click(u.trigger);assert.equal(u.win.location.href,'/trading/app?install=1');assert.equal(u.modal.open,false);
+    }
+    const u=ui({type:'ios',pathname:'/trading/app',search:'?install=1'});assert.match(u.label.textContent,/Home Screen/);assert(u.modal.open);assert(u.native.hidden);
+  });
+  await test('Apple installed mode recognises navigator.standalone without a matching media query',()=>{
+    const u=ui({type:'ios',navStandalone:true,search:'?install=1',access:'login'});
+    assert.equal(u.modal.open,false);assert(u.banner.hidden);assert.equal(u.label.textContent,'Open Trade Zuko');u.click(u.trigger);assert(u.authPanel.scrolled);
+  });
+  await test('Use app now focuses sign-in or the learning area without navigation or reload',()=>{
+    for(const access of ['login','workspace']){
+      const u=ui({access,search:'?install=1'});assert(u.modal.open);assert(u.click(u.useApp).prevented);
+      const panel=access==='login'?u.authPanel:u.workspace;assert(panel.focused);assert(panel.scrolled);assert.equal(panel.attributes.tabindex,'-1');assert.equal(u.modal.open,false);assert.equal(u.win.location.href,'https://example.com/trading/app?install=1');
+      u.trigger.focused=false;u.modal.emit('close');assert.equal(u.trigger.focused,false,'A delayed browser close event must not steal focus back from the app');
+    }
+    const u=ui({pathname:'/'});assert.equal(u.click(u.useApp).prevented,false);
+  });
+  await test('iPhone embedded-browser help copies only the public app link',async()=>{
+    assert(embeddedIOS({userAgent:'iPhone Instagram'}));assert(!embeddedIOS({userAgent:'iPhone Safari'}));
+    assert.equal(appleLink({hostname:'localhost',origin:'http://localhost'}),null);
+    assert.equal(appleLink({hostname:'example.com',origin:'https://example.com',search:'?token=private'}),'https://example.com/trading/app?install=1');
+    let copied;const u=ui({type:'ios',ua:'iPhone Instagram',safari:true,search:'?install=1',clipboard:{async writeText(value){copied=value;}}});
+    assert(u.safariHelp.open);assert.match(u.note.textContent,/inside another app/);u.click(u.safariCopy);await flush();assert.equal(copied,'https://example.com/trading/app?install=1');assert.match(u.safariStatus.textContent,/Copied/);
+  });
+  await test('Safari manual-copy fallback remains usable without clipboard permission',async()=>{
+    const u=ui({type:'ios',safari:true});u.click(u.safariCopy);await flush();assert(u.safariInput.selected);assert(u.safariInput.focused);assert.match(u.safariStatus.textContent,/Press and hold/);
+  });
   await test('Homepage and trading entry points have one manifest, installer and accessible dialog',()=>{
     for(const file of ['index.html','trading.html','trading/library.html','trading/app.html','trading/install.html']){
       const html=fs.readFileSync(path.join(__dirname,'..',file),'utf8');
       assert.equal((html.match(/rel="manifest"/g)||[]).length,1,file);
       assert.equal((html.match(/id="z-install-dialog"/g)||[]).length,1,file);
-      assert.equal((html.match(/src="\/trading\/install.js\?v=3"/g)||[]).length,1,file);
+      assert.equal((html.match(/src="\/trading\/install.js\?v=4"/g)||[]).length,1,file);
+      assert.equal((html.match(/name="apple-mobile-web-app-capable" content="yes"/g)||[]).length,1,file);
+      assert.match(html,/data-copy-safari/);assert.match(html,/class="z-apple-steps"/);assert.match(html,/data-use-app/);
       assert.match(html,/data-install-trigger/);assert.match(html,/data-guide="desktop"/);
       assert.match(html,/aria-labelledby="z-install-title"/);
       assert.equal(enhance(html),html,'Rebuilding must not duplicate or alter installer markup: '+file);
@@ -121,12 +153,13 @@ async function main(){
       assert.match(html,/href="\/trading\/install\?device=android" data-install-device="android"/);
       assert.match(html,/href="\/trading\/install\?device=ios" data-install-device="ios"/);
       assert.match(html,/aria-labelledby="z-install-title"/);
-      assert.equal((html.match(/src="\/trading\/install.js\?v=3"/g)||[]).length,1);
+      assert.equal((html.match(/src="\/trading\/install.js\?v=4"/g)||[]).length,1);
     }
     const app=fs.readFileSync(path.join(__dirname,'../trading/app.html'),'utf8');
     assert(app.indexOf('data-install-device')<app.indexOf('data-login-form'));
     assert.match(app,/data-app-motion/);assert.match(app,/data-app-theme/);
     assert.match(app,/src="\/trading-lab.js\?v=2"/);
+    assert(app.indexOf('/trading/network.js?v=1')<app.indexOf('/trading/app.js?v=5'));
     assert(!fs.readFileSync(path.join(__dirname,'../trading/app.js'),'utf8').includes('beforeinstallprompt'));
   });
   await test('Offline navigation serves only its matching shell, never protected content',async()=>{

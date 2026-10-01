@@ -10,6 +10,18 @@
 .z-install-dialog .small-note{font-size:.8rem;line-height:1.7;color:var(--muted)}
 .z-install-dialog .small-note a,.z-install-dialog .z-text-link{display:inline-block;text-decoration:underline;text-underline-offset:4px}
 .z-install-help:focus-visible,.z-install-dialog .action:focus-visible{outline:3px solid var(--accent,#b8a8ff);outline-offset:4px}
+.z-install-dialog .z-apple-steps{list-style:none;padding:0;margin:22px 0}
+.z-install-dialog .z-apple-steps li{display:flex;gap:14px;padding:0;margin-bottom:22px;align-items:flex-start}
+.z-apple-step-icon{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:12px;background:#b8a8ff18;border:1px solid #b8a8ff55;color:#c6b8ff;font-size:24px}
+.z-apple-step-icon svg{height:24px;width:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.z-apple-steps p{margin:5px 0 0;font-size:.8rem;line-height:1.6;color:var(--muted)}
+.z-safari-help{border-top:1px solid var(--line);padding-top:16px;font-size:.8rem;line-height:1.65}
+.z-safari-help summary{cursor:pointer;min-height:44px;color:var(--accent)}
+.z-safari-help label{display:grid;gap:8px;color:var(--muted);margin:16px 0}
+.z-safari-help input{box-sizing:border-box;width:100%;min-width:0;padding:12px;border:1px solid var(--line);border-radius:10px;background:#0f182b;color:var(--ink);font:16px/1.5 "Segoe UI",sans-serif}
+.z-install-dialog{max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+@media(max-width:760px){.zuko-app input:not([type="checkbox"]):not([type="range"]),.zuko-app select,.zuko-app textarea{font-size:16px}.zuko-app .z-subnav button{min-height:44px}.z-install-dialog{width:calc(100% - 24px)}}
+@media(display-mode:standalone){.zuko-app main{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}.zuko-app .z-app-heading{top:env(safe-area-inset-top)}.zuko-app .z-app-workspace{scroll-margin-top:calc(110px + env(safe-area-inset-top))}}
 @keyframes z-install-line{0%,100%{stroke-dashoffset:0}45%{stroke-dashoffset:390}80%{stroke-dashoffset:0}}
 html[data-motion="off"] .z-phone-line,html[data-page-visible="false"] .z-phone-line,.scene-idle .z-phone-line{animation-play-state:paused}
 @media(prefers-reduced-motion:reduce){.z-phone-line{animation:none}}

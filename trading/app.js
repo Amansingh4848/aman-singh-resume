@@ -9,10 +9,10 @@ function motionLabel(){const off=document.documentElement.dataset.motion==='off'
 appMotion.addEventListener('click',()=>{$('.world-motion').click();motionLabel();});
 $('[data-app-theme]').addEventListener('click',()=>$('.theme-toggle').click());motionLabel();
 async function api(action,data){
-  const options={credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)};
+  const options={credentials:'same-origin',cache:'no-store'};
   let url='/api/trade-access?action='+encodeURIComponent(action);
   if(data){options.method='POST';options.headers={'Content-Type':'application/json','X-Zuko-CSRF':session?.csrf||''};options.body=JSON.stringify({action,...data});url='/api/trade-access';}
-  const response=await fetch(url,options),result=await response.json();
+  const {response,body:result}=await window.TradeNetwork.json(url,options);
   if(!response.ok){const e=Error(result.error||'Request failed.');e.status=response.status;throw e;}return result;
 }
 function canRead(){return !!session||offlineMode&&!!offlineBundle;}
@@ -79,7 +79,7 @@ async function showPage(page,scroll=false){
   try{
     let data;
     if(offlineMode){data=Object.hasOwn(offlineBundle.pages,page)?offlineBundle.pages[page]:null;if(!data){const e=Error('This page is not in the saved download.');e.status=404;throw e;}}
-    else{const response=await fetch('/api/trade-access?action=content&page='+encodeURIComponent(page),{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000)});data=await response.json();if(!response.ok){const e=Error(data.error||'Unable to load lesson.');e.status=response.status;throw e;}}
+    else{const result=await window.TradeNetwork.json('/api/trade-access?action=content&page='+encodeURIComponent(page),{credentials:'same-origin',cache:'no-store'});data=result.body;if(!result.response.ok){const e=Error(data.error||'Unable to load lesson.');e.status=result.response.status;throw e;}}
     if(id!==navigation||!canRead())return;
     render(data,offlineMode);window.TradeLearning.init(content);window.TradeLab?.init(content);
     all('[data-app-route]').forEach(b=>{if(b.dataset.appRoute===page)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
@@ -184,8 +184,8 @@ async function loadVideos(){
   const area=content.querySelector('[data-app-videos]');if(!area)return;
   const grid=area.querySelector('[data-video-grid]'),notice=area.querySelector('[data-feed-status]');
   try{
-    const response=await fetch('/api/youtube?channel=trading',{signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error();
-    const data=await response.json();if(!area.isConnected||!session||offlineMode)return;
+    const {response,body:data}=await window.TradeNetwork.json('/api/youtube?channel=trading');if(!response.ok)throw Error();
+    if(!area.isConnected||!session||offlineMode)return;
     grid.replaceChildren();
     for(const v of data.videos){
       if(!/^https:\/\/www\.youtube\.com\/watch\?v=[A-Za-z0-9_-]{11}$/.test(v.url))continue;

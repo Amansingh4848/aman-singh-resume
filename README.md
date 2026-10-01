@@ -69,6 +69,8 @@ The owner explicitly approved password-protected offline study on 1 October 2026
 
 Browser installation support and menu wording vary. The native install prompt is used only after a user click and only when offered by the browser. Otherwise, manual instructions remain available. An explicit update button activates a waiting service-worker update, avoiding unexpected reloads while editing notes. The installation page can copy its hosted link; local-only addresses are not offered for phone sharing. The old Vercel previews may require hosting-provider sign-in. Use the public Netlify production address for phone installation.
 
+On iPhone and iPad the primary button is labelled **Add Trade Zuko to Home Screen**. It opens the actual `/trading/app` entry with an illustrated Safari guide. Apple still requires Share → Add to Home Screen → Add; no JavaScript button, fake IPA, configuration profile or forced-install workaround is used. Embedded-browser visitors get a public app link to copy into Safari, with a manual-copy fallback. Installed mode recognises both the standard display mode and Apple's standalone flag. **Use app now** focuses the sign-in panel or current learning area without reloading. Form text uses a readable mobile size, and installed-app layout accounts for safe areas. Bounded requests in `trading/network.js` do not depend on `AbortSignal.timeout`, while preserving authentication headers and cache protection.
+
 Run `npm test` for study/auth checks, install-state checks, encryption round trips, tampering/wrong-password rejection, permit separation and offline-shell verification. Actual installation on physical Android and iOS devices must still be verified before a learner rollout.
 
 ## Trade Zuko access management
